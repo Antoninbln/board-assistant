@@ -1,0 +1,26 @@
+{
+  "name": "assistant-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "moment": "^2.22.2",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "react-scripts": "1.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "css-loader": "^1.0.0",
+    "sass-loader": "^7.1.0",
+    "sgc": "^1.0.0",
+    "style-loader": "^0.22.1",
+    "webpack": "^4.16.5",
+    "webpack-dev-server": "^3.1.5"
+  }
+}
