@@ -3,8 +3,12 @@ import ReactDOM from 'react-dom';
 
 import registerServiceWorker from './registerServiceWorker';
 
-import './assets/stylessheets/index.css';
-import App from './sections/App.js';
+import "@babel/polyfill";
 
-ReactDOM.render(<App />, document.getElementById('root'));
+// import './assets/stylessheets/index.css';
+import App from './sections/App';
+
+ReactDOM.render(<App />, document.getElementById("root"));
 registerServiceWorker();
+
+module.hot.accept();

@@ -3,14 +3,11 @@ const apiKey = "&APPID=e3ec2876f020b69df62826855fe1bf38";
 
 export const fetchWeather = (lang) => {
 
-  console.log(`${baseUrl}/forecast?q=Montreuil,fr${apiKey}`);
-
   return fetch(`${baseUrl}/forecast?q=Montreuil,fr${apiKey}&lang=${lang}`)
     .then(res => {
       return res.json();
     })
     .then(data => {
-      console.log("on return");
       return data;
     })
     .catch(err => console.log("Error", err));

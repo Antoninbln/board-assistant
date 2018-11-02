@@ -1,16 +1,23 @@
-const webpack = require("webpack");
 const path = require("path");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
   mode: "development",
-  entry: "./src/index.js",
+  entry: './src/index.js',
+  plugins: [
+    new webpack.HotModuleReplacementPlugin()
+  ],
   output: {
-    path: path.resolve(__dirname, "./public"),
-    filename: "./public/bundle.js"
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '/',
+    filename: 'bundle.js'
   },
   resolve: {
     alias: {
       assets: path.resolve(__dirname, './src/assets/'),
+      utils: path.resolve(__dirname, './src/utils/'),
       components: path.resolve(__dirname, './src/components/'),
     }
   },
@@ -19,45 +26,36 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: "babel-loader"
+        use: ["babel-loader"]
       },
       {
         test: /\.scss$/,
         use: [
           {
-            loader: "style-loader"
+            loader: "style-loader" // creates style nodes from JS strings
           },
           {
-            loader: "css-loader",
+            loader: "css-loader", // translates CSS into CommonJS
             options: {
-              sourceMap: true,
+              importLoader: 1,
               modules: true,
-              localIdentName: "[local]___[hash:base64:5]"
+              localIdentName: '[local]___[hash:base64:5]'
             }
           },
           {
-            loader: "sass-loader"
+            loader: "sass-loader" // compiles Sass to CSS
           }
         ]
       },
-
-      
-      // {
-      //   test: /\.module\.scss$/,
-      //   include: path.resolve(__dirname, '../src'),
-      //   exclude: /(node_modules)/,
-      //   use: [
-      //     'sass-loader',
-      //     { // Provide path to the file with resources
-      //       options: {
-      //         localIdentName: "[name]_[local]_[hash:base64]",
-      //         resources: [
-      //           // Set path of base scss files like "btn"
-      //         ]
-      //       },
-      //     }
-      //   ],
-      // },
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: "html-loader",
+            options: { minimize: true }
+          }
+        ]
+      },
       {
         test: /\.(png|jpe?g|gif|svg|ttf|woff)$/i,
         use: [
@@ -72,6 +70,8 @@ module.exports = {
     ]
   },
   devServer: {
-    port: 3000
+    port: 3000,
+    hot: true,
+    contentBase: './dist'
   }
-}
+};

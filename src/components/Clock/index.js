@@ -17,7 +17,6 @@ class Clock extends Component {
   }
 
   render() {
-
     if (!this.state.clock) return <div>Load</div>;
 
     return (

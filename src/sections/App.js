@@ -1,24 +1,22 @@
 import React, { Component } from 'react';
 
-import Clock from "../components/Clock";
-import Weather from '../components/Weather';
-import Transports from '../components/Transports';
+import Clock from "components/Clock";
+import Weather from "components/Weather";
+import Transports from "components/Transports";
+import Vocal from "components/Vocal";
 
-
-import "./index.modules.scss";
+import styles from "./App.module.scss";
 
 class App extends Component {
 
   render() {
-
+    console.log(styles, styles.app);
     return (
-      <div className="App">
+      <div className={`App ${styles.app}`}>
         <header className="App-header">
-          <h1 className="App-title">Johnny vous écoute</h1>
+          <h1 className="App-title">Interface titre</h1>
+          <Clock />
         </header>
-        <Clock />
-        <Transports />
-        <Weather lang={"fr"} />
       </div>
     );
   }
