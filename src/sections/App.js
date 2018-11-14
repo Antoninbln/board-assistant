@@ -16,6 +16,7 @@ class App extends Component {
         <header className="App-header">
           <h1 className="App-title">Interface titre</h1>
           <Clock />
+          <Vocal />
         </header>
       </div>
     );
