@@ -11,7 +11,7 @@ class Vocal extends Component {
       mounted: false
     }
 
-    this.accessToken = "BQBqoMKv3zXfsIRA-V-Yzo9TI8P-u3QijL6KQbcvUNpPYrxTMiwYPTvYqjwsPymXwtvm7ZT6nBlBl1ShJwsOUB8lr_X4zH1N9sYtPpXRVXrK9sOrdKf0Cu7VkcJeu4vQjaPCcZSiqKr2_CaWEs5h-sk8B_V8cwVK7rEk_PE7AcZ_eiHLRK3CKjp0ycXI6tSt9GWuqK4";
+    this.accessToken = "BQBrdSKTErUCqBE3AlojvfyUr7_HoaRKv4fjJxJbyhaNu8zaDwk_dX_E7Ced3l4tdB5f8uXk_Uw2ehX_PTLwZijergPxGU8H9C3Ad5Eu8w5IpOEqnd6l8rTZZOQoGpaKVZiVCQEAxG3LdPXGfZBSe_pO6IbZ57NsC8J83LLry4VdcHypJDoYtjnjKLudafkQuLjkSQg";
     this.player = null;
 
     this.checkForSpotify = this.checkForSpotify.bind(this);
@@ -47,6 +47,8 @@ class Vocal extends Component {
       annyang.setLanguage('fr-FR');
       annyang.start();
     }
+
+    this.handleLogin();
   }
 
   /**
@@ -62,36 +64,35 @@ class Vocal extends Component {
         getOAuthToken: cb => cb(this.accessToken)
       });
     
-      // Error handling
-      this.player.addListener('initialization_error', ({ message }) => { console.error(message); });
-      this.player.addListener('authentication_error', ({ message }) => { console.error(message); });
-      this.player.addListener('account_error', ({ message }) => { console.error(message); });
-      this.player.addListener('playback_error', ({ message }) => { console.error(message); });
-    
-      // Playback status updates
-      this.player.addListener('player_state_changed', state => { console.log(state); });
-    
-      // Ready
-      this.player.addListener('ready', ({ device_id }) => {
-        console.log('Ready with Device ID', device_id);
-      });
-    
-      // Not Ready
-      this.player.addListener('not_ready', ({ device_id }) => {
-        console.log('Device ID has gone offline', device_id);
-      });
-    
-      // Connect to the player!
-      this.player.connect();
-      console.log(this.player);
+      this.apiEventHandler();
     }
+  }
+
+  apiEventHandler() {
+    // Error handling
+    this.player.addListener('initialization_error', ({ message }) => { console.error(message); });
+    this.player.addListener('authentication_error', ({ message }) => { console.error(message); });
+    this.player.addListener('account_error', ({ message }) => { console.error(message); });
+    this.player.addListener('playback_error', ({ message }) => { console.error(message); });
+  
+    // Playback status updates
+    this.player.addListener('player_state_changed', state => { console.log(state); });
+  
+    // Ready
+    this.player.addListener('ready', ({ device_id }) => console.log('Ready with Device ID', device_id));
+  
+    // Not Ready
+    this.player.addListener('not_ready', ({ device_id }) => console.log('Device ID has gone offline', device_id));
+  
+    // Connect to the player!
+    this.player.connect();
   }
 
   handleLogin() {
     console.log("testing");
     if (this.accessToken !== "") {
       this.setState({ loggedIn: true });
-      // check every second for the player.
+      // check every second if the player is accessible
       this.playerCheckInterval = setInterval(() => this.checkForSpotify(), 1000);
     }
   }
@@ -181,7 +182,7 @@ class Vocal extends Component {
         <p className="output">MSG</p>
         <p className="hints">{command || "Parlez un peu..."}  --> Type : {commandType}</p>
         <p className="hints">{toShow}</p>
-        <button onClick={() => this.handleLogin()}>PLAY SONG MUTHAFUCKA</button>
+        <button onClick={() => this.handleLogin()}>LOG IN</button>
         <button
           onClick={
             () => this.playSong({
@@ -197,7 +198,7 @@ class Vocal extends Component {
               this.search({playerInstance: this.player})
                 .then(
                   uri => {
-                    console.log(uri);
+                    console.log("Track URI", uri);
                     this.playSong({ spotify_uri: uri, playerInstance: this.player});
                   }
                 )}
