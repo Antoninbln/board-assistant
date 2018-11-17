@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import annyang from "annyang";
+import { playSong, search } from "../utils/fetchSpotify";
 
 class Vocal extends Component {
   constructor(props) {
@@ -11,13 +12,13 @@ class Vocal extends Component {
       mounted: false
     }
 
-    this.accessToken = "BQBrdSKTErUCqBE3AlojvfyUr7_HoaRKv4fjJxJbyhaNu8zaDwk_dX_E7Ced3l4tdB5f8uXk_Uw2ehX_PTLwZijergPxGU8H9C3Ad5Eu8w5IpOEqnd6l8rTZZOQoGpaKVZiVCQEAxG3LdPXGfZBSe_pO6IbZ57NsC8J83LLry4VdcHypJDoYtjnjKLudafkQuLjkSQg";
+    this.accessToken = "BQA-VlTV_mNDlf-NdCxyFqYjRwUMhN1eu3V-7rwJBbKWAJjffgYuoHYjNqyfg9odR0OY-sqrybEsXubs5t8ySqISqv6mG8eZNDk-9qTgP9ggFw0n2NmTkPJ7jLWbRlAea6zM7BBPqMw5nab5riEd7NtqcndjY5jnWXUCpxqACPpE3RGc2sMGjx-tpw0Wh7kGShmOdVM";
     this.player = null;
 
     this.checkForSpotify = this.checkForSpotify.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
-    this.playSong = this.playSong.bind(this);
-    this.search = this.search.bind(this);
+    // this.playSong = this.playSong.bind(this);
+    // this.search = this.search.bind(this);
 
     this.playerCheckInterval = null;
   }
@@ -26,7 +27,7 @@ class Vocal extends Component {
     this.audio = new Audio();
 
     if (annyang) {
-      console.log("Speech recognition launched --");
+      console.log("%c > Speech recognition launched", "color: red; font-weight: 600;");
       const commands = {
         "bonjour": () => {
           this.setState({ command: "Bonjour !" });
@@ -35,11 +36,32 @@ class Vocal extends Component {
           this.setState({ comand: "test" });
         },
         "play *song": song => {
+          console.log("Start - Play request");
+          this.setState({ command: song })
           if (this.player) {
-            this.search(song).then(uri => this.playSong({ spotify_uri: uri, playerInstance: this.player}));
-            const result = `https://api.spotify.com/v1/search?q=${encodeURI(song)}`;
-            this.setState({ command: song, commandType: "play", toShow: result });  
+            search(song, this.accessToken).then(uri => playSong({
+              spotify_uri: uri,
+              playerInstance: this.player,
+              accessToken: this.accessToken
+            }));
+            // const result = `https://api.spotify.com/v1/search?q=${encodeURI(song)}`;
+            // this.setState({ command: song, commandType: "play", toShow: result });
           }
+          console.log("END - play request");
+        },
+        "joue *song": song => {
+          console.log("Start - Play request");
+          this.setState({ command: song })
+          if (this.player) {
+            search(song, this.accessToken).then(uri => playSong({
+              spotify_uri: uri,
+              playerInstance: this.player,
+              accessToken: this.accessToken
+            }));
+            // const result = `https://api.spotify.com/v1/search?q=${encodeURI(song)}`;
+            // this.setState({ command: song, commandType: "play", toShow: result });
+          }
+          console.log("END - play request");
         },
         "*anything": anything => this.setState({ command: anything })
       };
@@ -56,11 +78,11 @@ class Vocal extends Component {
    */
   checkForSpotify() {
     if (window.Spotify !== null ) {
-      console.log("Spotify mounted", window.Spotify);
+      console.log("%c > Spotify accessible", "color: red; font-weight: 600;");
       clearInterval(this.playerCheckInterval);
 
       this.player = new window.Spotify.Player({
-        name: "Anto's Player",
+        name: "Mon player",
         getOAuthToken: cb => cb(this.accessToken)
       });
     
@@ -68,6 +90,9 @@ class Vocal extends Component {
     }
   }
 
+  /**
+   * Handle events about the connection to Spotify API
+   */
   apiEventHandler() {
     // Error handling
     this.player.addListener('initialization_error', ({ message }) => { console.error(message); });
@@ -88,6 +113,9 @@ class Vocal extends Component {
     this.player.connect();
   }
 
+  /**
+   * Create an interval to check when player is ready
+   */
   handleLogin() {
     console.log("testing");
     if (this.accessToken !== "") {
@@ -96,83 +124,6 @@ class Vocal extends Component {
       this.playerCheckInterval = setInterval(() => this.checkForSpotify(), 1000);
     }
   }
-
-  playSong({
-    spotify_uri,
-    playerInstance: {
-      _options: {
-        getOAuthToken,
-        id
-      }
-    }
-  }) {
-    getOAuthToken(access_token => {
-      fetch(`https://api.spotify.com/v1/me/player/play?device_id=${id}`, {
-        method: 'PUT',
-        body: JSON.stringify({ uris: [spotify_uri] }),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.accessToken}`
-        },
-      });
-    });
-  };
-  // spotify:track:70FCugJxa7XW04Np6iYJdI
-  
-  // REVOIR LES PROMISES !!!!
-  search(query) {
-    const song = "21 questions";
-    let result = fetch(`https://api.spotify.com/v1/search?q=${encodeURI(query)}&type=track`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.accessToken}`
-      }})
-      .then(res => res.json())
-      .then(body => {
-        console.log(body.tracks.items[0]);
-        return body.tracks.items[0].uri;
-      });
-    return result;
-  }
-
-
-  // playSong (songName, artistName) {
-  //   var query = songName;
-  //   if (artistName) {
-  //     query += ' artist:' + artistName;
-  //   }
-  //   this.spotifyApi.searchTracks(query).then(
-  //     (response) => {
-  //       if (response.tracks.items.length) {
-  //         var track = response.tracks.items[0];
-  //         this.audio.src = track.uri;
-  //         this.audio.play();
-  //         // communicateAction('<div>Playing ' + track.name + ' by ' + track.artists[0].name + '</div><img width="150" src="' + track.album.images[1].url + '">');
-  //       }
-  //     });
-  // }
-
-  // search() {
-  //   console.log('this.state', this.state);        
-  //   const BASE_URL = 'https://api.spotify.com/v1/search?';
-  //   const FETCH_URL = BASE_URL + 'q=' + this.state.query + '&type=artist&limit=1';    
-  //   var accessToken = 'YOUR_ACCESS_TOKEN'
-  //   var myHeaders = new Headers();
-
-  //   var myOptions = {
-  //     method: 'GET',
-  //     headers:  {
-  //       'Authorization': 'Bearer ' + accessToken
-  //    },
-  //     mode: 'cors',
-  //     cache: 'default'
-  //   };
-
-  //   fetch(FETCH_URL, myOptions )
-  //     .then(response => response.json())
-  //     .then(json => console.log(json))
-  // }
 
   render() {
     const { command, commandType, toShow, mounted } = this.state;
@@ -185,24 +136,27 @@ class Vocal extends Component {
         <button onClick={() => this.handleLogin()}>LOG IN</button>
         <button
           onClick={
-            () => this.playSong({
+            () => playSong({
               playerInstance: this.player,
               spotify_uri: 'spotify:track:7xGfFoTpQ2E7fRF5lN10tr',
+              accessToken: this.accessToken
             })}
         >
           PLAY
         </button>
         <button
           onClick={
-            () => {
-              this.search({playerInstance: this.player})
-                .then(
-                  uri => {
-                    console.log("Track URI", uri);
-                    this.playSong({ spotify_uri: uri, playerInstance: this.player});
-                  }
-                )}
-        }>
+            () => search("21 questions", this.accessToken).then(
+                uri => {
+                  console.log("Track URI", uri);
+                  playSong({
+                    spotify_uri: uri,
+                    playerInstance: this.player,
+                    accessToken: this.accessToken
+                  });
+                }
+            )}
+        >
           PLAY SONG MUTHAFUCKA
         </button>
       </div>

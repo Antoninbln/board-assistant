@@ -9,6 +9,10 @@ import styles from "./App.module.scss";
 
 class App extends Component {
 
+  componentDidMount() {
+    console.log("App is loaded")
+  }
+
   render() {
     console.log(styles, styles.app);
     return (
