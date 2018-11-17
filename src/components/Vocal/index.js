@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import annyang from "annyang";
-import { playSong, search, getArtists, getCover, getTrackName, getDuration, stopSong, resumeSong } from "../utils/fetchSpotify";
+import { playSong, search, getArtists, getCover, getTrackName, getDuration } from "../utils/fetchSpotify";
 
 import styles from "./index.module.scss";
 
@@ -15,14 +15,12 @@ class Vocal extends Component {
       mounted: false
     }
 
-    this.accessToken = "BQASRvRb8iIr7O1Jqaiosw2IAaeREtt5Lh8udMvbCcOrPXnh_ijvEuSrZ0usb6Rkf18AlOyAyBaLe3AMFpeINbk73tVaaFrYLR5wn5aSyrIbo1hGp-LePhySs7g-7dtWVX9toHEm_-1OMOtrnbPgAZNYoCfYxu9ZZXg4o5eGdxcuos3Xoc8p5SF7-1M-EXtdMN5KGss";
+    this.accessToken = "BQDVAkpAdPRI9qOpxEA_iXUZbvD9jofMMap9gYX4zeRV6-91UIbUozMc1Xr6k5fqyhi_R9SjCE1dfI3tjkN1XXneF2jwLxFkLELtRTi-ZrBo7npz3j5cZaAY207lm6-2byXQazrmV90oIYdUn5Us4W3fd5pVWnS_RZYnN1aCwv86cQ2Aco55oUa5wFyoA6zD2X1V74o";
     this.player = null;
 
     this.checkForSpotify = this.checkForSpotify.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
     this.launchSong = this.launchSong.bind(this);
-    // this.playSong = this.playSong.bind(this);
-    // this.search = this.search.bind(this);
 
     this.playerCheckInterval = null;
   }
@@ -31,7 +29,7 @@ class Vocal extends Component {
     this.audio = new Audio();
 
     if (annyang) {
-      console.log("%c > Speech recognition launched", "color: red; font-weight: 600;");
+      console.log("%c > Speech recognition accessible", "color: red; font-weight: 600;");
 
       const commands = {
         "bonjour": () => {
@@ -50,18 +48,21 @@ class Vocal extends Component {
         },
         "stop": () => {
           this.setState({ command: "Stop" });
-          this.player && stopSong({
-            playerInstance: this.player,
-            accessToken: this.accessToken
-          });
+          this.player && this.player.pause();
         },
         "go": () => {
-          console.log("resume");
           this.setState({ command: "Resume" });
-          this.player && resumeSong({
-            playerInstance: this.player,
-            accessToken: this.accessToken
-          });
+          this.player && this.player.resume();
+        },
+        "next": () => {
+          this.setState({ command: "Next" });
+          // @TODO NOT READY YET
+          // this.player && this.player.nextTrack();
+        },
+        "previous": () => {
+          this.setState({ command: "Previous" });
+          // @TODO NOT READY YET
+          // this.player && this.player.previousTrack();  
         },
         "change language *lang": lang => {
           // @TODO THIS ISN'T WORKING YET
@@ -87,25 +88,24 @@ class Vocal extends Component {
     search(query, this.accessToken)
       .then(track => {
         console.log("\n\nTHEN () - ", track);
-        this.setState({
-          currentTrack: track
-        }, () => {
+        if (!track.length > 0) {
           playSong({
             spotify_uri: track.uri,
             playerInstance: this.player,
             accessToken: this.accessToken
           })
-        });
+        }
+        else {
+          throw new Error();
+        }
       })
       .catch(err => console.error("Houston Houston, we got a situation here !", err));
-
-    console.log("test", this.state.currentTrack);
   }
   /**
    * We check if Playback SDK is loaded (cause Lifecycles methods can't do it)
    */
   checkForSpotify() {
-    if (window.Spotify !== null ) {
+    if (window.Spotify) {
       console.log("%c > Spotify accessible", "color: red; font-weight: 600;");
       clearInterval(this.playerCheckInterval);
 
@@ -129,7 +129,12 @@ class Vocal extends Component {
     this.player.addListener('playback_error', ({ message }) => { console.error(message); });
   
     // Playback status updates
-    this.player.addListener('player_state_changed', state => { console.log(state); });
+    this.player.addListener('player_state_changed', statePlayer => {
+      this.setState({
+        currentTrack: statePlayer.track_window && statePlayer.track_window.current_track
+      });
+      console.log("State changed", statePlayer);
+    });
   
     // Ready
     this.player.addListener('ready', ({ device_id }) => console.log('Ready with Device ID', device_id));
@@ -153,13 +158,13 @@ class Vocal extends Component {
   }
 
   render() {
-    const { currentTrack, command, commandType, toShow, mounted } = this.state;
+    const { currentTrack, command } = this.state;
 
-    console.log("\nRENDER - CURRENT TRACK", this.state.currentTrack);
+    console.log("\nRENDER - STATE", this.state);
 
     return (
       <div className={styles.group}>
-        <p>{command || "Parlez un peu..."}  --> Type : {commandType}</p>
+        <p>Commande : {command || "Parlez un peu..."}</p>
         <button onClick={() => this.handleLogin()}>LOG IN</button>
         <button onClick={() => this.launchSong("21 questions")}>PLAY 21 questions</button>
         <button onClick={() => this.launchSong("genesis justice")}>genesis justice</button>

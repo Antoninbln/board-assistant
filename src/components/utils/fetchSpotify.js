@@ -15,7 +15,11 @@ export const search = (query, accessToken) => {
     });
   return result;
 }
-
+/**
+ * Request PLAY for a song
+ * @param { Oobject } param : { playerInstance: <Object>, accessToken: String }
+ * @return { Void }
+ */
 export const playSong = ({
   spotify_uri,
   playerInstance: {
@@ -38,6 +42,11 @@ export const playSong = ({
   });
 };
 
+/**
+ * Set on Pause current song
+ * @param { Oobject } param : { playerInstance: <Object>, accessToken: String }
+ * @return { Void }
+ */
 export const stopSong = ({
   playerInstance: {
     _options: {
@@ -59,6 +68,11 @@ export const stopSong = ({
   });
 };
 
+/**
+ * Set on Resume current song
+ * @param { Oobject } param : { playerInstance: <Object>, accessToken: String }
+ * @return { Void }
+ */
 export const resumeSong = ({
   playerInstance: {
     _options: {
@@ -79,6 +93,7 @@ export const resumeSong = ({
     });
   });
 };
+
 
 /**
  * Return list of Artists name
