@@ -1,22 +1,26 @@
 import React, { Component } from "react";
 import annyang from "annyang";
-import { playSong, search } from "../utils/fetchSpotify";
+import { playSong, search, getArtists, getCover, getTrackName, getDuration } from "../utils/fetchSpotify";
+
+import styles from "./index.module.scss";
 
 class Vocal extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      currentTrack: null,
       command: "",
       commandType: "",
       mounted: false
     }
 
-    this.accessToken = "BQA-VlTV_mNDlf-NdCxyFqYjRwUMhN1eu3V-7rwJBbKWAJjffgYuoHYjNqyfg9odR0OY-sqrybEsXubs5t8ySqISqv6mG8eZNDk-9qTgP9ggFw0n2NmTkPJ7jLWbRlAea6zM7BBPqMw5nab5riEd7NtqcndjY5jnWXUCpxqACPpE3RGc2sMGjx-tpw0Wh7kGShmOdVM";
+    this.accessToken = "BQBqCjWnEINTAXmS6ft2n0xJUuo6lvHYm-qw4bFTT5uUdCPIXAJZNTk4Qg3y5Oj9U0MfrjBHVkAjSnBOayD3CGAVF44J8uX_8OPzcRjUW9zMLG88SWXVrY0vUIsE3xLt_JKAhMAv4IMHINOM5u0uKzuq3EUWOs099qWJ3ChEGsfh9KtWdDfpO5bj5i05-2lUh09DWY4";
     this.player = null;
 
     this.checkForSpotify = this.checkForSpotify.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
+    this.launchSong = this.launchSong.bind(this);
     // this.playSong = this.playSong.bind(this);
     // this.search = this.search.bind(this);
 
@@ -39,25 +43,17 @@ class Vocal extends Component {
           console.log("Start - Play request");
           this.setState({ command: song })
           if (this.player) {
-            search(song, this.accessToken).then(uri => playSong({
-              spotify_uri: uri,
-              playerInstance: this.player,
-              accessToken: this.accessToken
-            }));
-            // const result = `https://api.spotify.com/v1/search?q=${encodeURI(song)}`;
-            // this.setState({ command: song, commandType: "play", toShow: result });
+            this.launchSong(song);
           }
           console.log("END - play request");
+            // const result = `https://api.spotify.com/v1/search?q=${encodeURI(song)}`;
+            // this.setState({ command: song, commandType: "play", toShow: result });
         },
         "joue *song": song => {
           console.log("Start - Play request");
           this.setState({ command: song })
           if (this.player) {
-            search(song, this.accessToken).then(uri => playSong({
-              spotify_uri: uri,
-              playerInstance: this.player,
-              accessToken: this.accessToken
-            }));
+            this.launchSong(song);
             // const result = `https://api.spotify.com/v1/search?q=${encodeURI(song)}`;
             // this.setState({ command: song, commandType: "play", toShow: result });
           }
@@ -73,6 +69,22 @@ class Vocal extends Component {
     this.handleLogin();
   }
 
+  launchSong(query) {
+    // Search for the track
+    search(query, this.accessToken)
+      .then(track => {
+        this.setState({
+          currentTrack: track
+        }, () => {
+          playSong({
+            spotify_uri: track.uri,
+            playerInstance: this.player,
+            accessToken: this.accessToken
+          })
+        });
+      });
+    console.log("test", this.state.currentTrack);
+  }
   /**
    * We check if Playback SDK is loaded (cause Lifecycles methods can't do it)
    */
@@ -117,7 +129,6 @@ class Vocal extends Component {
    * Create an interval to check when player is ready
    */
   handleLogin() {
-    console.log("testing");
     if (this.accessToken !== "") {
       this.setState({ loggedIn: true });
       // check every second if the player is accessible
@@ -126,39 +137,29 @@ class Vocal extends Component {
   }
 
   render() {
-    const { command, commandType, toShow, mounted } = this.state;
+    const { currentTrack, command, commandType, toShow, mounted } = this.state;
+
+    console.log("\nRENDER - CURRENT TRACK", this.state.currentTrack);
 
     return (
-      <div>
-        <p className="output">MSG</p>
-        <p className="hints">{command || "Parlez un peu..."}  --> Type : {commandType}</p>
-        <p className="hints">{toShow}</p>
+      <div className={styles.group}>
+        <p>{command || "Parlez un peu..."}  --> Type : {commandType}</p>
         <button onClick={() => this.handleLogin()}>LOG IN</button>
-        <button
-          onClick={
-            () => playSong({
-              playerInstance: this.player,
-              spotify_uri: 'spotify:track:7xGfFoTpQ2E7fRF5lN10tr',
-              accessToken: this.accessToken
-            })}
-        >
-          PLAY
-        </button>
-        <button
-          onClick={
-            () => search("21 questions", this.accessToken).then(
-                uri => {
-                  console.log("Track URI", uri);
-                  playSong({
-                    spotify_uri: uri,
-                    playerInstance: this.player,
-                    accessToken: this.accessToken
-                  });
-                }
-            )}
-        >
-          PLAY SONG MUTHAFUCKA
-        </button>
+        <button onClick={() => this.launchSong("21 questions")}>PLAY 21 questions</button>
+        <button onClick={() => this.launchSong("genesis justice")}>genesis justice</button>
+        {currentTrack && (
+          <section className="spotify">
+            <div className="spotify__player">
+              <h2><span className="spotify__player__youre-listening-to">Vous écoutez</span> {getTrackName(currentTrack)} - {
+                getArtists(currentTrack).length > 1
+                  ? (getArtists(currentTrack).map((item, index) => <span key={`artist-${index}`}>{!index == 0 && " & "}{item}</span>))
+                  : <span>{getArtists(currentTrack)[0]}</span>}
+              </h2>
+              <img src={getCover(currentTrack).url} alt="Pochette d'album" />
+              <p>{getDuration(currentTrack)}</p>
+            </div>
+          </section>
+        )}
       </div>
     );
   }

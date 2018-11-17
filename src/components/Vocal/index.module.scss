@@ -1,0 +1,19 @@
+.group {
+  :global {
+    .spotify {
+      display: flex;
+      justify-content: center;
+
+      &__player {
+        text-align: center;
+        // flex-direction: column;
+        // flex-grow: 0;
+
+        &__youre-listening-to {
+          color: rgba(0, 0, 0, 0.5);
+          font-weight: 300;
+        }
+      }
+    }
+  }
+}
