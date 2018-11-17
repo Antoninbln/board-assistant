@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import annyang from "annyang";
-import { playSong, search, getArtists, getCover, getTrackName, getDuration } from "../utils/fetchSpotify";
+import { playSong, search, getArtists, getCover, getTrackName, getDuration, stopSong, resumeSong } from "../utils/fetchSpotify";
 
 import styles from "./index.module.scss";
 
@@ -32,6 +32,7 @@ class Vocal extends Component {
 
     if (annyang) {
       console.log("%c > Speech recognition launched", "color: red; font-weight: 600;");
+
       const commands = {
         "bonjour": () => {
           this.setState({ command: "Bonjour !" });
@@ -40,27 +41,39 @@ class Vocal extends Component {
           this.setState({ comand: "test" });
         },
         "play *song": song => {
-          console.log("Start - Play request");
-          this.setState({ command: song })
-          if (this.player) {
-            this.launchSong(song);
-          }
-          console.log("END - play request");
-            // const result = `https://api.spotify.com/v1/search?q=${encodeURI(song)}`;
-            // this.setState({ command: song, commandType: "play", toShow: result });
+          this.setState({ command: song });
+          this.player && this.launchSong(song);
         },
         "joue *song": song => {
-          console.log("Start - Play request");
-          this.setState({ command: song })
-          if (this.player) {
-            this.launchSong(song);
-            // const result = `https://api.spotify.com/v1/search?q=${encodeURI(song)}`;
-            // this.setState({ command: song, commandType: "play", toShow: result });
-          }
-          console.log("END - play request");
+          this.setState({ command: song });
+          this.player && this.launchSong(song);
+        },
+        "stop": () => {
+          this.setState({ command: "Stop" });
+          this.player && stopSong({
+            playerInstance: this.player,
+            accessToken: this.accessToken
+          });
+        },
+        "go": () => {
+          console.log("resume");
+          this.setState({ command: "Resume" });
+          this.player && resumeSong({
+            playerInstance: this.player,
+            accessToken: this.accessToken
+          });
+        },
+        "change language *lang": lang => {
+          // @TODO THIS ISN'T WORKING YET
+          // annyang.abort();
+          // if (lang == "english") annyang.setLanguage("en-US");
+          // else annyang.setLanguage("fr-FR");
+          // console.log("lang changed ", lang);
+          // annyang.start();
         },
         "*anything": anything => this.setState({ command: anything })
       };
+
       annyang.addCommands(commands);
       annyang.setLanguage('fr-FR');
       annyang.start();
@@ -97,7 +110,7 @@ class Vocal extends Component {
       clearInterval(this.playerCheckInterval);
 
       this.player = new window.Spotify.Player({
-        name: "Mon player",
+        name: "Player board",
         getOAuthToken: cb => cb(this.accessToken)
       });
     
