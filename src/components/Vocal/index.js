@@ -15,7 +15,7 @@ class Vocal extends Component {
       mounted: false
     }
 
-    this.accessToken = "BQBqCjWnEINTAXmS6ft2n0xJUuo6lvHYm-qw4bFTT5uUdCPIXAJZNTk4Qg3y5Oj9U0MfrjBHVkAjSnBOayD3CGAVF44J8uX_8OPzcRjUW9zMLG88SWXVrY0vUIsE3xLt_JKAhMAv4IMHINOM5u0uKzuq3EUWOs099qWJ3ChEGsfh9KtWdDfpO5bj5i05-2lUh09DWY4";
+    this.accessToken = "BQASRvRb8iIr7O1Jqaiosw2IAaeREtt5Lh8udMvbCcOrPXnh_ijvEuSrZ0usb6Rkf18AlOyAyBaLe3AMFpeINbk73tVaaFrYLR5wn5aSyrIbo1hGp-LePhySs7g-7dtWVX9toHEm_-1OMOtrnbPgAZNYoCfYxu9ZZXg4o5eGdxcuos3Xoc8p5SF7-1M-EXtdMN5KGss";
     this.player = null;
 
     this.checkForSpotify = this.checkForSpotify.bind(this);
@@ -73,6 +73,7 @@ class Vocal extends Component {
     // Search for the track
     search(query, this.accessToken)
       .then(track => {
+        console.log("\n\nTHEN () - ", track);
         this.setState({
           currentTrack: track
         }, () => {
@@ -82,7 +83,9 @@ class Vocal extends Component {
             accessToken: this.accessToken
           })
         });
-      });
+      })
+      .catch(err => console.error("Houston Houston, we got a situation here !", err));
+
     console.log("test", this.state.currentTrack);
   }
   /**
@@ -150,12 +153,12 @@ class Vocal extends Component {
         {currentTrack && (
           <section className="spotify">
             <div className="spotify__player">
-              <h2><span className="spotify__player__youre-listening-to">Vous écoutez</span> {getTrackName(currentTrack)} - {
+              <h2><span className="spotify__player__youre-listening-to">Vous écoutez</span><br/>{getTrackName(currentTrack)} - {
                 getArtists(currentTrack).length > 1
                   ? (getArtists(currentTrack).map((item, index) => <span key={`artist-${index}`}>{!index == 0 && " & "}{item}</span>))
                   : <span>{getArtists(currentTrack)[0]}</span>}
               </h2>
-              <img src={getCover(currentTrack).url} alt="Pochette d'album" />
+              {getCover(currentTrack) ? <img src={getCover(currentTrack)} alt="Pochette d'album" /> : <p>No cover available</p>}
               <p>{getDuration(currentTrack)}</p>
             </div>
           </section>

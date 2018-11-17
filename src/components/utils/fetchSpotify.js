@@ -65,5 +65,5 @@ export const getCover = track => {
     console.error("Can't find a cover for this track");
     return null;
   }
-  return cover;
+  return cover.url;
 }
