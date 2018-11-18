@@ -1,7 +1,12 @@
 import moment from "moment";
 
-
-export const search = (query, accessToken) => {
+/**
+ * Request SEARCH for a song
+ * @param { String } query
+ * @param { String } accessToken
+ * @return { Void }
+ */
+export const searchSong = (query, accessToken) => {
   let result = fetch(`https://api.spotify.com/v1/search?q=${encodeURI(query)}&type=track`, {
     method: 'GET',
     headers: {
@@ -10,11 +15,12 @@ export const search = (query, accessToken) => {
     }})
     .then(res => res.json())
     .then(body => {
-      console.log(body.tracks.items[0]);
-      return body.tracks.items[0];
+      console.log(body.tracks.items.map(item => item.uri));
+      return body.tracks.items.map(item => item.uri);
     });
   return result;
-}
+};
+
 /**
  * Request PLAY for a song
  * @param { Oobject } param : { playerInstance: <Object>, accessToken: String }
@@ -30,10 +36,11 @@ export const playSong = ({
   },
   accessToken
 }) => {
+  console.log(spotify_uri);
   getOAuthToken(() => {
     fetch(`https://api.spotify.com/v1/me/player/play?device_id=${id}`, {
       method: 'PUT',
-      body: JSON.stringify({ uris: [spotify_uri] }),
+      body: JSON.stringify({ uris: spotify_uri }),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${accessToken}`
@@ -41,6 +48,54 @@ export const playSong = ({
     });
   });
 };
+
+/**
+ * Request SEARCH for an album
+ * @param { String } query
+ * @param { String } accessToken
+ * @return { Void }
+ */
+export const searchAlbum = (query, accessToken) => {
+  let result = fetch(`https://api.spotify.com/v1/search?q=${encodeURI(query)}&type=album`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${accessToken}`
+    }})
+    .then(res => res.json())
+    .then(body => {
+      console.log(body.albums.items[0]);
+      return body.albums.items[0];
+    });
+  return result;
+};
+
+// /**
+//  * Request PLAY for an album
+//  * @param { Oobject } param : { playerInstance: <Object>, accessToken: String }
+//  * @return { Void }
+//  */
+// export const playAlbum = ({
+//   spotify_uri,
+//   playerInstance: {
+//     _options: {
+//       getOAuthToken,
+//       id
+//     }
+//   },
+//   accessToken
+// }) => {
+//   getOAuthToken(() => {
+//     fetch(`https://api.spotify.com/v1/me/player/play?device_id=${id}`, {
+//       method: 'PUT',
+//       body: JSON.stringify({ uris: [spotify_uri] }),
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'Authorization': `Bearer ${accessToken}`
+//       },
+//     });
+//   });
+// };
 
 /**
  * Set on Pause current song

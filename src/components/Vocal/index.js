@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import annyang from "annyang";
-import { playSong, search, getArtists, getCover, getTrackName, getDuration } from "../utils/fetchSpotify";
+import { playSong, searchSong, searchAlbum, getArtists, getCover, getTrackName, getDuration } from "../utils/fetchSpotify";
 
 import styles from "./index.module.scss";
 
@@ -15,7 +15,7 @@ class Vocal extends Component {
       mounted: false
     }
 
-    this.accessToken = "BQDVAkpAdPRI9qOpxEA_iXUZbvD9jofMMap9gYX4zeRV6-91UIbUozMc1Xr6k5fqyhi_R9SjCE1dfI3tjkN1XXneF2jwLxFkLELtRTi-ZrBo7npz3j5cZaAY207lm6-2byXQazrmV90oIYdUn5Us4W3fd5pVWnS_RZYnN1aCwv86cQ2Aco55oUa5wFyoA6zD2X1V74o";
+    this.accessToken = "BQBEIY5cjRMYVh9695vYRF-RvY4YNHYsaS9MlrIp7eUbBZtvSOSXjQXV_7BX0M4-KjcUsR-Qt9nmrH0PN3dSBXpm1_bq5FSDon9td6d1U1KO2gS0zsbEo6xaYDaFgCXN4QZmIGY8V33xJAMF01lYuMJzIkKfXJPw9U95vdmLUdcYU77PCu1l2ZtwER6Xm1Hg6GhNLP4";
     this.player = null;
 
     this.checkForSpotify = this.checkForSpotify.bind(this);
@@ -42,6 +42,10 @@ class Vocal extends Component {
           this.setState({ command: song });
           this.player && this.launchSong(song);
         },
+        "album *album": album => {
+          this.setState({ command: album });
+          this.player && this.launchAlbum(album);
+        },
         "joue *song": song => {
           this.setState({ command: song });
           this.player && this.launchSong(song);
@@ -56,13 +60,11 @@ class Vocal extends Component {
         },
         "next": () => {
           this.setState({ command: "Next" });
-          // @TODO NOT READY YET
-          // this.player && this.player.nextTrack();
+          this.player && this.player.nextTrack();
         },
         "previous": () => {
           this.setState({ command: "Previous" });
-          // @TODO NOT READY YET
-          // this.player && this.player.previousTrack();  
+          this.player && this.player.previousTrack();  
         },
         "change language *lang": lang => {
           // @TODO THIS ISN'T WORKING YET
@@ -85,9 +87,27 @@ class Vocal extends Component {
 
   launchSong(query) {
     // Search for the track
-    search(query, this.accessToken)
+    searchSong(query, this.accessToken)
       .then(track => {
-        console.log("\n\nTHEN () - ", track);
+        console.log("track", track);
+        if (track.length > 0) {
+          playSong({
+            spotify_uri: track,
+            playerInstance: this.player,
+            accessToken: this.accessToken
+          })
+        }
+        else {
+          throw new Error();
+        }
+      })
+      .catch(err => console.error("Houston Houston, we got a situation here !", err));
+  }
+
+  launchAlbum(query) {
+    // Search for the track
+    searchAlbum(query, this.accessToken)
+      .then(track => {
         if (!track.length > 0) {
           playSong({
             spotify_uri: track.uri,
@@ -101,6 +121,7 @@ class Vocal extends Component {
       })
       .catch(err => console.error("Houston Houston, we got a situation here !", err));
   }
+
   /**
    * We check if Playback SDK is loaded (cause Lifecycles methods can't do it)
    */
