@@ -66,6 +66,14 @@ class Vocal extends Component {
           this.setState({ command: "Previous" });
           this.player && this.player.previousTrack();  
         },
+        "forward": () => {
+          this.setState({ command: "Seek" });
+          this.player && this.player.seek(1000 * 60); // Move to 1 min
+        },
+        "backward": () => {
+          this.setState({ command: "Reset" });
+          this.player && this.player.seek(0);  
+        },
         "change language *lang": lang => {
           // @TODO THIS ISN'T WORKING YET
           // annyang.abort();
@@ -186,9 +194,9 @@ class Vocal extends Component {
     return (
       <div className={styles.group}>
         <p>Commande : {command || "Parlez un peu..."}</p>
-        <button onClick={() => this.handleLogin()}>LOG IN</button>
+        {/* <button onClick={() => this.handleLogin()}>LOG IN</button>
         <button onClick={() => this.launchSong("21 questions")}>PLAY 21 questions</button>
-        <button onClick={() => this.launchSong("genesis justice")}>genesis justice</button>
+        <button onClick={() => this.launchSong("genesis justice")}>genesis justice</button> */}
         {currentTrack && (
           <section className="spotify">
             <div className="spotify__player">
