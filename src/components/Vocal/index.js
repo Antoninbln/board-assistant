@@ -8,17 +8,14 @@ class Vocal extends Component {
 
     this.state = {
       command: "",
-      commandType: "",
-      mounted: false
-    }
+      commandType: ""
+    };
 
     this.accessToken = "BQA-VlTV_mNDlf-NdCxyFqYjRwUMhN1eu3V-7rwJBbKWAJjffgYuoHYjNqyfg9odR0OY-sqrybEsXubs5t8ySqISqv6mG8eZNDk-9qTgP9ggFw0n2NmTkPJ7jLWbRlAea6zM7BBPqMw5nab5riEd7NtqcndjY5jnWXUCpxqACPpE3RGc2sMGjx-tpw0Wh7kGShmOdVM";
     this.player = null;
 
     this.checkForSpotify = this.checkForSpotify.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
-    // this.playSong = this.playSong.bind(this);
-    // this.search = this.search.bind(this);
 
     this.playerCheckInterval = null;
   }
@@ -37,29 +34,31 @@ class Vocal extends Component {
         },
         "play *song": song => {
           console.log("Start - Play request");
-          this.setState({ command: song })
+          this.setState({ command: song });
           if (this.player) {
-            search(song, this.accessToken).then(uri => playSong({
-              spotify_uri: uri,
-              playerInstance: this.player,
-              accessToken: this.accessToken
-            }));
-            // const result = `https://api.spotify.com/v1/search?q=${encodeURI(song)}`;
-            // this.setState({ command: song, commandType: "play", toShow: result });
+            search(song, this.accessToken)
+            .then(
+              uri => playSong({
+                spotify_uri: uri,
+                playerInstance: this.player,
+                accessToken: this.accessToken
+              })
+            );
           }
           console.log("END - play request");
         },
         "joue *song": song => {
           console.log("Start - Play request");
-          this.setState({ command: song })
+          this.setState({ command: song });
           if (this.player) {
-            search(song, this.accessToken).then(uri => playSong({
-              spotify_uri: uri,
-              playerInstance: this.player,
-              accessToken: this.accessToken
-            }));
-            // const result = `https://api.spotify.com/v1/search?q=${encodeURI(song)}`;
-            // this.setState({ command: song, commandType: "play", toShow: result });
+            search(song, this.accessToken)
+            .then(
+              uri => playSong({
+                spotify_uri: uri,
+                playerInstance: this.player,
+                accessToken: this.accessToken
+              })
+            );
           }
           console.log("END - play request");
         },
@@ -126,7 +125,7 @@ class Vocal extends Component {
   }
 
   render() {
-    const { command, commandType, toShow, mounted } = this.state;
+    const { command, commandType, toShow } = this.state;
 
     return (
       <div>
@@ -147,17 +146,14 @@ class Vocal extends Component {
         <button
           onClick={
             () => search("21 questions", this.accessToken).then(
-                uri => {
-                  console.log("Track URI", uri);
-                  playSong({
-                    spotify_uri: uri,
-                    playerInstance: this.player,
-                    accessToken: this.accessToken
-                  });
-                }
+              uri => playSong({
+                  spotify_uri: uri,
+                  playerInstance: this.player,
+                  accessToken: this.accessToken
+                })
             )}
         >
-          PLAY SONG MUTHAFUCKA
+          PLAY SONG
         </button>
       </div>
     );
