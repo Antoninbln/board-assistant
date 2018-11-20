@@ -3,6 +3,7 @@ import annyang from "annyang";
 import { playSong, searchSong, searchAlbum, getArtists, getCover, getTrackName, getDuration } from "../utils/fetchSpotify";
 
 import styles from "./index.module.scss";
+import BesideTrack from "./BesideTrack";
 
 class Vocal extends Component {
   constructor(props) {
@@ -10,12 +11,14 @@ class Vocal extends Component {
 
     this.state = {
       currentTrack: null,
+      nextTrack: null,
+      previousTrack: null,
       command: "",
       commandType: "",
       mounted: false
     }
 
-    this.accessToken = "BQBEIY5cjRMYVh9695vYRF-RvY4YNHYsaS9MlrIp7eUbBZtvSOSXjQXV_7BX0M4-KjcUsR-Qt9nmrH0PN3dSBXpm1_bq5FSDon9td6d1U1KO2gS0zsbEo6xaYDaFgCXN4QZmIGY8V33xJAMF01lYuMJzIkKfXJPw9U95vdmLUdcYU77PCu1l2ZtwER6Xm1Hg6GhNLP4";
+    this.accessToken = "BQCCSqGBY0m9Avvs_tnGwY4OA67-SE5Mskh6AAxz4MAGGRrtaD6yF9VofXjIXbjpqzf4nnDW0pGy0qvVJZJKMu7_eCAb7VUZeGHItOj5OjKitk43iwS8UM7RODj9nwIKONMdAUPwk1ymrCQvf0FeiA-jLoxZaOiaUkrj59myfbLLl05jcJ2YrUpHzJl07T6zlG9MmHk";
     this.player = null;
 
     this.checkForSpotify = this.checkForSpotify.bind(this);
@@ -73,14 +76,6 @@ class Vocal extends Component {
         "backward": () => {
           this.setState({ command: "Reset" });
           this.player && this.player.seek(0);  
-        },
-        "change language *lang": lang => {
-          // @TODO THIS ISN'T WORKING YET
-          // annyang.abort();
-          // if (lang == "english") annyang.setLanguage("en-US");
-          // else annyang.setLanguage("fr-FR");
-          // console.log("lang changed ", lang);
-          // annyang.start();
         },
         "*anything": anything => this.setState({ command: anything })
       };
@@ -140,7 +135,10 @@ class Vocal extends Component {
 
       this.player = new window.Spotify.Player({
         name: "Player board",
-        getOAuthToken: cb => cb(this.accessToken)
+        getOAuthToken: cb => {
+          // Request for refresh should be done here
+          cb(this.accessToken)
+        }
       });
     
       this.apiEventHandler();
@@ -160,7 +158,9 @@ class Vocal extends Component {
     // Playback status updates
     this.player.addListener('player_state_changed', statePlayer => {
       this.setState({
-        currentTrack: statePlayer.track_window && statePlayer.track_window.current_track
+        currentTrack: statePlayer.track_window && statePlayer.track_window.current_track,
+        previousTrack: statePlayer.track_window && statePlayer.track_window.previous_tracks && statePlayer.track_window.previous_tracks[0],
+        nextTrack: statePlayer.track_window && statePlayer.track_window.next_tracks && statePlayer.track_window.next_tracks[0]
       });
       console.log("State changed", statePlayer);
     });
@@ -187,16 +187,13 @@ class Vocal extends Component {
   }
 
   render() {
-    const { currentTrack, command } = this.state;
+    const { currentTrack, previousTrack, nextTrack, command } = this.state;
 
     console.log("\nRENDER - STATE", this.state);
 
     return (
       <div className={styles.group}>
         <p>Commande : {command || "Parlez un peu..."}</p>
-        {/* <button onClick={() => this.handleLogin()}>LOG IN</button>
-        <button onClick={() => this.launchSong("21 questions")}>PLAY 21 questions</button>
-        <button onClick={() => this.launchSong("genesis justice")}>genesis justice</button> */}
         {currentTrack && (
           <section className="spotify">
             <div className="spotify__player">
@@ -205,8 +202,12 @@ class Vocal extends Component {
                   ? (getArtists(currentTrack).map((item, index) => <span key={`artist-${index}`}>{!index == 0 && " & "}{item}</span>))
                   : <span>{getArtists(currentTrack)[0]}</span>}
               </h2>
-              {getCover(currentTrack) ? <img src={getCover(currentTrack)} alt="Pochette d'album" /> : <p>No cover available</p>}
               <p>{getDuration(currentTrack)}</p>
+              {getCover(currentTrack) ? <img src={getCover(currentTrack)} alt="Pochette d'album" /> : <p>No cover available</p>}
+              <div className="spotify__player__footer">
+                {previousTrack && <BesideTrack track={previousTrack} />}
+                {nextTrack && <BesideTrack track={nextTrack} isNext />}
+              </div>
             </div>
           </section>
         )}

@@ -71,6 +71,27 @@ export const searchAlbum = (query, accessToken) => {
 };
 
 // /**
+//  * Request REFRESH token for a song
+//  * @param { String } query
+//  * @param { String } accessToken
+//  * @return { Void }
+//  */
+// export const getAccessToken = (query, accessToken) => {
+//   let result = fetch(`https://accounts.spotify.com/api/token`, {
+//     method: 'GET',
+//     headers: {
+//       'Content-Type': 'application/json',
+//       'Authorization': `Bearer ${accessToken}`
+//     }})
+//     .then(res => res.json())
+//     .then(body => {
+//       console.log(body.tracks.items.map(item => item.uri));
+//       return body.tracks.items.map(item => item.uri);
+//     });
+//   return result;
+// };
+
+// /**
 //  * Request PLAY for an album
 //  * @param { Oobject } param : { playerInstance: <Object>, accessToken: String }
 //  * @return { Void }
