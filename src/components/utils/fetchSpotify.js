@@ -31,8 +31,8 @@ export const playSong = ({
   playerInstance: {
     _options: {
       getOAuthToken,
-      id
-    }
+      id,
+    },
   },
   accessToken
 }) => {

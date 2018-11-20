@@ -14,9 +14,8 @@ class Vocal extends Component {
       nextTrack: null,
       previousTrack: null,
       command: "",
-      commandType: "",
-      mounted: false
-    }
+      commandType: ""
+    };
 
     this.accessToken = "BQCCSqGBY0m9Avvs_tnGwY4OA67-SE5Mskh6AAxz4MAGGRrtaD6yF9VofXjIXbjpqzf4nnDW0pGy0qvVJZJKMu7_eCAb7VUZeGHItOj5OjKitk43iwS8UM7RODj9nwIKONMdAUPwk1ymrCQvf0FeiA-jLoxZaOiaUkrj59myfbLLl05jcJ2YrUpHzJl07T6zlG9MmHk";
     this.player = null;
