@@ -1,0 +1,49 @@
+{
+  "types": [
+    {
+      "emoji": ":package:",
+      "type": "Chore:",
+      "description": "Changes that affect the build system or external dependencies and moving files"
+    },
+    {
+      "emoji": ":robot:",
+      "type": "CI:",
+      "description": "Change to our CI configuration files and scripts"
+    },
+    {
+      "emoji": ":memo:",
+      "type": "Docs:",
+      "description": "Documentation only changes"
+    },
+    {
+      "emoji": ":tada:",
+      "type": "Feat:",
+      "description": "New feature"
+    },
+    {
+      "emoji": ":bug:",
+      "type": "Fix:",
+      "description": "Bug fix"
+    },
+    {
+      "emoji": ":arrows_counterclockwise:",
+      "type": "Perf:",
+      "description": "Code change that improves performance"
+    },
+    {
+      "emoji": ":hammer:",
+      "type": "Refactor:",
+      "description": "Code change that neither fixes a bug nor adds a feature"
+    },
+    {
+      "emoji": ":art:",
+      "type": "Style:",
+      "description": "Changes that do not affect the meaning of the code"
+    },
+    {
+      "emoji": ":construction_worker:",
+      "type": "Test:",
+      "description": "Adding missing tests or correcting existinng"
+    }
+  ]
+}
