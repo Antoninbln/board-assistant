@@ -5,21 +5,14 @@
   "dependencies": {
     "annyang": "^2.6.1",
     "body-parser": "^1.18.3",
-    "cookie-parser": "^1.4.3",
-    "cors": "^2.8.5",
-    "express": "^4.16.4",
     "moment": "^2.22.2",
-    "querystring": "^0.2.0",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
-    "react-scripts": "1.1.4",
-    "request": "^2.88.0"
+    "react-scripts": "1.1.4"
   },
   "scripts": {
-    "start": "yarn server && yarn client",
-    "client": "webpack-dev-server --mode development --hot --module-bind js=babel-loader",
-    "server": "nodemon ./src/server/authorization_code/app.js",
-    "build": "webpack --mode production",
+    "start": "webpack-dev-server --mode development --hot --module-bind js=babel-loader",
+    "build": "webpack  --mode production",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "sgc": "sgc"
@@ -35,10 +28,8 @@
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
     "node-sass": "^4.9.4",
-    "nodemon": "^1.18.6",
     "sass-loader": "^7.1.0",
     "sgc": "^1.0.0",
-    "spotify-web-api-js": "^1.1.1",
     "style-loader": "^0.22.1",
     "webpack": "^4.16.5",
     "webpack-cli": "^3.1.2",
