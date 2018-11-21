@@ -12,7 +12,7 @@ const BesideTrack = ({ track, isNext }) => (
       <h3>{getTrackName(track)}</h3>
       <p>
         {getArtists(track).length > 0
-          ? (getArtists(track).map((item, index) => <span key={`artist-${index}`}>{!index == 0 && " & "}{item}</span>))
+          ? getArtists(track).map((item, index) => <span key={`artist-${index}`}>{!index == 0 && " & "}{item}</span>)
           : <span>{getArtists(track)[0]}</span>
         }
       </p>

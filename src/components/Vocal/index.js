@@ -17,7 +17,7 @@ class Vocal extends Component {
       commandType: ""
     };
 
-    this.accessToken = "BQCCSqGBY0m9Avvs_tnGwY4OA67-SE5Mskh6AAxz4MAGGRrtaD6yF9VofXjIXbjpqzf4nnDW0pGy0qvVJZJKMu7_eCAb7VUZeGHItOj5OjKitk43iwS8UM7RODj9nwIKONMdAUPwk1ymrCQvf0FeiA-jLoxZaOiaUkrj59myfbLLl05jcJ2YrUpHzJl07T6zlG9MmHk";
+    this.accessToken = "BQD2SkcnrHirqUYRxk8kD9CMj-W-wfycs6nDk54FnROoJ--7zEJUoM0oJ3aByB5d7j08rRXfdi9RUy6QEZz_kGVmOcOVK2_10SrXBWhC6TT_Uhea_0I8qGv_YP26xQR134t8ERGecnn0L-S421-M7LLKKPyRaLzqAzWlspf9-hzr9oHNH53uFryo_pUSP5ipbgt5zeg";
     this.player = null;
 
     this.checkForSpotify = this.checkForSpotify.bind(this);
@@ -97,7 +97,7 @@ class Vocal extends Component {
             spotify_uri: track,
             playerInstance: this.player,
             accessToken: this.accessToken
-          })
+          });
         }
         else {
           throw new Error();
@@ -115,7 +115,7 @@ class Vocal extends Component {
             spotify_uri: track.uri,
             playerInstance: this.player,
             accessToken: this.accessToken
-          })
+          });
         }
         else {
           throw new Error();

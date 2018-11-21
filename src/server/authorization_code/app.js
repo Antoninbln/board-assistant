@@ -12,7 +12,6 @@ var request = require('request'); // "Request" library
 var cors = require('cors');
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
-var dotenv = require("dotenv").config();
 
 var client_id = process.env.CLIENT_ID; // process.env.client_id; // Your client id
 var client_secret = process.env.CLIENT_SECRET; //process.env.client_secret; // Your secret
