@@ -64,105 +64,25 @@ export const searchAlbum = (query, accessToken) => {
   return result;
 };
 
-// /**
-//  * Request REFRESH token for a song
-//  * @param { String } query
-//  * @param { String } accessToken
-//  * @return { Void }
-//  */
-// export const getAccessToken = (query, accessToken) => {
-//   let result = fetch(`https://accounts.spotify.com/api/token`, {
-//     method: 'GET',
-//     headers: {
-//       'Content-Type': 'application/json',
-//       'Authorization': `Bearer ${accessToken}`
-//     }})
-//     .then(res => res.json())
-//     .then(body => {
-//       console.log(body.tracks.items.map(item => item.uri));
-//       return body.tracks.items.map(item => item.uri);
-//     });
-//   return result;
-// };
+/**
+ * 
+ */
+export const getHashParams = () => {
+  let hashParams = {};
+  let regE = /([^&;=]+)=?([^&;]*)/g;
+  const regR = /([^&;=]+)=?([^&;]*)/g;
 
-// /**
-//  * Request PLAY for an album
-//  * @param { Oobject } param : { playerInstance: <Object>, accessToken: String }
-//  * @return { Void }
-//  */
-// export const playAlbum = ({
-//   spotify_uri,
-//   playerInstance: {
-//     _options: {
-//       getOAuthToken,
-//       id
-//     }
-//   },
-//   accessToken
-// }) => {
-//   getOAuthToken(() => {
-//     fetch(`https://api.spotify.com/v1/me/player/play?device_id=${id}`, {
-//       method: 'PUT',
-//       body: JSON.stringify({ uris: [spotify_uri] }),
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'Authorization': `Bearer ${accessToken}`
-//       },
-//     });
-//   });
-// };
+  const q = window.location.hash.substring(1);
 
-// /**
-//  * Set on Pause current song
-//  * @param { Oobject } param : { playerInstance: <Object>, accessToken: String }
-//  * @return { Void }
-//  */
-// export const stopSong = ({
-//   playerInstance: {
-//     _options: {
-//       getOAuthToken,
-//       id,
-//     }
-//   },
-//   accessToken,
-// }) => {
-//   getOAuthToken(() => {
-//     fetch(`https://api.spotify.com/v1/me/player/pause?device_id=${id}`, {
-//       method: 'PUT',
-//       // body: JSON.stringify({ uris: [spotify_uri] }),
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'Authorization': `Bearer ${accessToken}`,
-//       },
-//     });
-//   });
-// };
+  regE = regR.exec(q)
 
-// /**
-//  * Set on Resume current song
-//  * @param { Oobject } param : { playerInstance: <Object>, accessToken: String }
-//  * @return { Void }
-//  */
-// export const resumeSong = ({
-//   playerInstance: {
-//     _options: {
-//       getOAuthToken,
-//       id
-//     },
-//   },
-//   accessToken,
-// }) => {
-//   getOAuthToken(() => {
-//     fetch(`https://api.spotify.com/v1/me/player/play?device_id=${id}`, {
-//       method: 'PUT',
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'Authorization': `Bearer ${accessToken}`,
-//       },
-//     });
-//   });
-// };
+  while (regE) {
+    hashParams[regE[1]] = decodeURIComponent(regE[2]);
+    regE = regR.exec(q);
+  }
 
+  return hashParams;
+};
 
 /**
  * Return list of Artists name
@@ -198,4 +118,46 @@ export const getCover = track => {
     return null;
   }
   return cover.url;
-}
+};
+
+export const getNewAccessToken = refreshToken => {
+  console.log("asking new access token");
+  let result = fetch(`http://localhost:8888/refresh_token`)
+    .then((res, err) => {
+      if (err) throw new Error(err);
+      return res.json()
+    })
+    .then(body => {
+      console.log("new token body", body);
+      return body;
+    });
+    // .catch(err => {
+    //   console.error("Something went wrong when u tried to refresh token", err)
+    // });
+
+  return result;
+
+  // app.get('/refresh_token', function(req, res) {
+
+  //   // requesting access token from refresh token
+  //   var refresh_token = req.query.refresh_token;
+  //   var authOptions = {
+  //     url: 'https://accounts.spotify.com/api/token',
+  //     headers: { 'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')) },
+  //     form: {
+  //       grant_type: 'refresh_token',
+  //       refresh_token: refresh_token
+  //     },
+  //     json: true
+  //   };
+  
+  //   request.post(authOptions, function(error, response, body) {
+  //     if (!error && response.statusCode === 200) {
+  //       var access_token = body.access_token;
+  //       res.send({
+  //         'access_token': access_token
+  //       });
+  //     }
+  //   });
+  // });
+};
