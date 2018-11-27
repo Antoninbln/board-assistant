@@ -15,6 +15,8 @@ export const searchSong = (query, accessToken) => {
     }})
     .then(res => res.json())
     .then(body => body.tracks.items.map(item => item.uri));
+
+    console.log("SEARCH SONG - ", result);
   return result;
 };
 
@@ -120,44 +122,14 @@ export const getCover = track => {
   return cover.url;
 };
 
-export const getNewAccessToken = refreshToken => {
-  console.log("asking new access token");
-  let result = fetch(`http://localhost:8888/refresh_token`)
-    .then((res, err) => {
-      if (err) throw new Error(err);
-      return res.json()
-    })
-    .then(body => {
-      console.log("new token body", body);
-      return body;
-    });
-    // .catch(err => {
-    //   console.error("Something went wrong when u tried to refresh token", err)
-    // });
+
+export const getNewAccessToken = (refreshToken) => {
+  let result = fetch(`http://localhost:8888/refresh_token?refresh_token=${refreshToken}`, {
+    method: 'GET'
+  })
+    .then(res => res.json())
+    .then(body => body.access_token)
+    .catch(err => console.error("Something went wrong with new access token !", err));
 
   return result;
-
-  // app.get('/refresh_token', function(req, res) {
-
-  //   // requesting access token from refresh token
-  //   var refresh_token = req.query.refresh_token;
-  //   var authOptions = {
-  //     url: 'https://accounts.spotify.com/api/token',
-  //     headers: { 'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')) },
-  //     form: {
-  //       grant_type: 'refresh_token',
-  //       refresh_token: refresh_token
-  //     },
-  //     json: true
-  //   };
-  
-  //   request.post(authOptions, function(error, response, body) {
-  //     if (!error && response.statusCode === 200) {
-  //       var access_token = body.access_token;
-  //       res.send({
-  //         'access_token': access_token
-  //       });
-  //     }
-  //   });
-  // });
 };

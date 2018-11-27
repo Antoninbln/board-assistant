@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import annyang from "annyang";
-import { playSong, searchSong, searchAlbum, getArtists, getCover, getTrackName, getDuration, getHashParams } from "../utils/fetchSpotify";
+import { playSong, searchSong, searchAlbum, getArtists, getCover, getTrackName, getDuration, getHashParams, getNewAccessToken } from "../utils/fetchSpotify";
 
 import styles from "./index.module.scss";
 import BesideTrack from "./BesideTrack";
@@ -15,7 +15,9 @@ class Vocal extends Component {
       previousTrack: null,
       command: "",
       commandType: "",
-      spotifyLogged: false
+      spotifyLogged: false,
+      accessToken: null,
+      refreshToken: null
     };
 
     this.player = null;
@@ -23,7 +25,6 @@ class Vocal extends Component {
     this.checkForSpotify = this.checkForSpotify.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
     this.launchSong = this.launchSong.bind(this);
-    this.getNewAccessToken = this.getNewAccessToken.bind(this);
 
     this.playerCheckInterval = null;
   }
@@ -31,18 +32,17 @@ class Vocal extends Component {
   componentDidMount() {
     this.audio = new Audio();
 
+    // Retrieve papams from URL
     if (window) {
       const params = getHashParams();
-
       this.setState({
         accessToken: params && params.access_token,
         refreshToken: params && params.refresh_token
-      });
+      }, () => this.handleLogin());
     }
 
     if (annyang) {
       console.log("%c > Speech recognition accessible", "color: red; font-weight: 600;");
-
       const commands = {
         "bonjour": () => {
           this.setState({ command: "Bonjour !" });
@@ -93,54 +93,66 @@ class Vocal extends Component {
       annyang.setLanguage('fr-FR');
       annyang.start();
     }
-
-    this.handleLogin();
-  }
-
-  launchSong(query) {
-    const { accessToken } = this.state;
-    // Search for the track
-    searchSong(query, accessToken)
-      .then(track => {
-        console.log("track", track);
-        if (track.length > 0) {
-          playSong({
-            spotify_uri: track,
-            playerInstance: this.player,
-            accessToken
-          });
-        }
-        else {
-          throw new Error();
-        }
-      })
-      .catch(err => console.error("Houston Houston, we got a situation here !", err));
-  }
-
-  launchAlbum(query) {
-    const { accessToken } = this.state;
-    // Search for the track
-    searchAlbum(query, accessToken)
-      .then(track => {
-        if (!track.length > 0) {
-          playSong({
-            spotify_uri: track.uri,
-            playerInstance: this.player,
-            accessToken
-          });
-        }
-        else {
-          throw new Error();
-        }
-      })
-      .catch(err => console.error("Houston Houston, we got a situation here !", err));
   }
 
   /**
-   * We check if Playback SDK is loaded (cause Lifecycles methods can't do it)
+   * Play song
+   * Details : 1. Fetch new access_token -> 2. Fetch song data -> 3. Play song
+   * @param { String } query 
+   * @return { Void }
+   */
+  launchSong(query) {
+    const { refreshToken } = this.state;
+
+    getNewAccessToken(refreshToken)
+      .then(newToken => {
+        searchSong(query, newToken) // Search for the track
+          .then(track => {
+            console.log("track", track);
+            if (track.length > 0) {
+              playSong({
+                spotify_uri: track,
+                playerInstance: this.player,
+                accessToken: newToken
+              });
+            }
+          })
+          .catch(err => console.error("Houston Houston, we got a situation here !", "Cf. Song", err));
+      });    
+  }
+
+  /**
+   * Play album
+   * Details : 1. Fetch new access_token -> 2. Fetch album data -> 3. Play album song
+   * @param { String } query 
+   * @return { Void }
+   */
+  launchAlbum(query) {
+    const { refreshToken } = this.state;
+
+    getNewAccessToken(refreshToken)
+      .then(newToken => {
+        searchAlbum(query, newToken) // Search for the album
+          .then(track => {
+            if (!track.length > 0) {
+              playSong({
+                spotify_uri: track.uri,
+                playerInstance: this.player,
+                accessToken: newToken
+              });
+            }
+          })
+          .catch(err => console.error("Houston Houston, we got a situation here !", "Cf. Album", err));
+        }
+      )
+  }
+
+  /**
+   * Check if Playback SDK is loaded (cause Lifecycles methods can't do it)
    */
   checkForSpotify() {
     const { accessToken } = this.state;
+
     if (window.Spotify) {
       console.log("%c > Spotify accessible", "color: red; font-weight: 600;");
       clearInterval(this.playerCheckInterval);
@@ -148,11 +160,11 @@ class Vocal extends Component {
       this.player = new window.Spotify.Player({
         name: "Player board",
         getOAuthToken: cb => {
-          // Request for refresh should be done here
+          // We still use access token from url params, because this content is called only on mounted compo
           cb(accessToken);
         }
       });
-    
+
       this.apiEventHandler();
     }
   }
@@ -163,7 +175,7 @@ class Vocal extends Component {
   apiEventHandler() {
     // Error handling
     this.player.addListener('initialization_error', ({ message }) => { console.error(message); });
-    this.player.addListener('authentication_error', ({ message }) => { console.error(message); });
+    this.player.addListener('authentication_error', ({ message }) => { console.error("Failed to authenticate account", message) });
     this.player.addListener('account_error', ({ message }) => { console.error(message); });
     this.player.addListener('playback_error', ({ message }) => { console.error(message); });
   
@@ -202,31 +214,16 @@ class Vocal extends Component {
     }
   }
 
-  getNewAccessToken() {
-    const { refreshToken } = this.state;
-
-
-    console.log("asking new access token", refreshToken);
-
-    let result = fetch(`http://localhost:8888/refresh_token?refresh_token=${refreshToken}`, {
-      method: 'GET'
-    })
-      .then(res => res.json())
-      .then(body => console.log(body));
-    return result;
-  }
-
   render() {
-
-    const { currentTrack, previousTrack, nextTrack, command, accessToken } = this.state;
-
+    const { currentTrack, previousTrack, nextTrack, command, accessToken, refreshToken } = this.state;
     console.log("\nRENDER - STATE", this.state);
     console.log("RENDER - Access", accessToken);
 
     return (
       <div className={styles.group}>
         <p>Commande : {command || "Parlez un peu..."}</p>
-        <button onClick={this.getNewAccessToken}>Refresh access</button>
+        <button onClick={() => getNewAccessToken(refreshToken)}>Refresh access</button>
+        <button onClick={() => this.launchSong("The bravery")}>PLAY - The Brave</button>
         {currentTrack && (
           <section className="spotify">
             <div className="spotify__player">
