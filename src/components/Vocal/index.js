@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import annyang from "annyang";
-import { playSong, searchSong, searchAlbum, getArtists, getCover, getTrackName, getDuration } from "../utils/fetchSpotify";
+import { playSong, searchSong, searchAlbum, getArtists, getCover, getTrackName, getDuration, getHashParams, getNewAccessToken } from "../utils/fetchSpotify";
 
 import styles from "./index.module.scss";
 import BesideTrack from "./BesideTrack";
@@ -14,10 +14,12 @@ class Vocal extends Component {
       nextTrack: null,
       previousTrack: null,
       command: "",
-      commandType: ""
+      commandType: "",
+      spotifyLogged: false,
+      accessToken: null,
+      refreshToken: null
     };
 
-    this.accessToken = "BQD2SkcnrHirqUYRxk8kD9CMj-W-wfycs6nDk54FnROoJ--7zEJUoM0oJ3aByB5d7j08rRXfdi9RUy6QEZz_kGVmOcOVK2_10SrXBWhC6TT_Uhea_0I8qGv_YP26xQR134t8ERGecnn0L-S421-M7LLKKPyRaLzqAzWlspf9-hzr9oHNH53uFryo_pUSP5ipbgt5zeg";
     this.player = null;
 
     this.checkForSpotify = this.checkForSpotify.bind(this);
@@ -26,13 +28,21 @@ class Vocal extends Component {
 
     this.playerCheckInterval = null;
   }
-  
+
   componentDidMount() {
     this.audio = new Audio();
 
+    // Retrieve params from URL
+    if (window) {
+      const params = getHashParams();
+      this.setState({
+        accessToken: params && params.access_token,
+        refreshToken: params && params.refresh_token
+      }, () => this.handleLogin());
+    }
+
     if (annyang) {
       console.log("%c > Speech recognition accessible", "color: red; font-weight: 600;");
-
       const commands = {
         "bonjour": () => {
           this.setState({ command: "Bonjour !" });
@@ -83,51 +93,65 @@ class Vocal extends Component {
       annyang.setLanguage('fr-FR');
       annyang.start();
     }
-
-    this.handleLogin();
-  }
-
-  launchSong(query) {
-    // Search for the track
-    searchSong(query, this.accessToken)
-      .then(track => {
-        console.log("track", track);
-        if (track.length > 0) {
-          playSong({
-            spotify_uri: track,
-            playerInstance: this.player,
-            accessToken: this.accessToken
-          });
-        }
-        else {
-          throw new Error();
-        }
-      })
-      .catch(err => console.error("Houston Houston, we got a situation here !", err));
-  }
-
-  launchAlbum(query) {
-    // Search for the track
-    searchAlbum(query, this.accessToken)
-      .then(track => {
-        if (!track.length > 0) {
-          playSong({
-            spotify_uri: track.uri,
-            playerInstance: this.player,
-            accessToken: this.accessToken
-          });
-        }
-        else {
-          throw new Error();
-        }
-      })
-      .catch(err => console.error("Houston Houston, we got a situation here !", err));
   }
 
   /**
-   * We check if Playback SDK is loaded (cause Lifecycles methods can't do it)
+   * Play song
+   * Details : 1. Fetch new access_token -> 2. Fetch song data -> 3. Play song
+   * @param { String } query 
+   * @return { Void }
+   */
+  launchSong(query) {
+    const { refreshToken } = this.state;
+
+    getNewAccessToken(refreshToken)
+      .then(newToken => {
+        searchSong(query, newToken) // Search for the track
+          .then(track => {
+            if (track.length > 0) {
+              playSong({
+                spotify_uri: track,
+                playerInstance: this.player,
+                accessToken: newToken
+              });
+            }
+          })
+          .catch(err => console.error("Houston Houston, we got a situation here !", "Cf. Song", err));
+      })
+  }
+
+  /**
+   * Play album
+   * Details : 1. Fetch new access_token -> 2. Fetch album data -> 3. Play album song
+   * @param { String } query 
+   * @return { Void }
+   */
+  launchAlbum(query) {
+    const { refreshToken } = this.state;
+
+    getNewAccessToken(refreshToken)
+      .then(newToken => {
+        searchAlbum(query, newToken) // Search for the album
+          .then(track => {
+            if (!track.length > 0) {
+              playSong({
+                spotify_uri: track.uri,
+                playerInstance: this.player,
+                accessToken: newToken
+              });
+            }
+          })
+          .catch(err => console.error("Houston Houston, we got a situation here !", "Cf. Album", err));
+        }
+      )
+  }
+
+  /**
+   * Check if Playback SDK is loaded (cause Lifecycles methods can't do it)
    */
   checkForSpotify() {
+    const { refreshToken } = this.state;
+
     if (window.Spotify) {
       console.log("%c > Spotify accessible", "color: red; font-weight: 600;");
       clearInterval(this.playerCheckInterval);
@@ -135,11 +159,12 @@ class Vocal extends Component {
       this.player = new window.Spotify.Player({
         name: "Player board",
         getOAuthToken: cb => {
-          // Request for refresh should be done here
-          cb(this.accessToken)
+          getNewAccessToken(refreshToken)
+            .then(newToken => cb(newToken))
+            .catch(err => console.error("Houston Houston, we got a situation here !", "Cf. CheckForSpotify", err));
         }
       });
-    
+
       this.apiEventHandler();
     }
   }
@@ -150,7 +175,7 @@ class Vocal extends Component {
   apiEventHandler() {
     // Error handling
     this.player.addListener('initialization_error', ({ message }) => { console.error(message); });
-    this.player.addListener('authentication_error', ({ message }) => { console.error(message); });
+    this.player.addListener('authentication_error', ({ message }) => { console.error("Failed to authenticate account", message) });
     this.player.addListener('account_error', ({ message }) => { console.error(message); });
     this.player.addListener('playback_error', ({ message }) => { console.error(message); });
   
@@ -161,11 +186,10 @@ class Vocal extends Component {
         previousTrack: statePlayer.track_window && statePlayer.track_window.previous_tracks && statePlayer.track_window.previous_tracks[0],
         nextTrack: statePlayer.track_window && statePlayer.track_window.next_tracks && statePlayer.track_window.next_tracks[0]
       });
-      console.log("State changed", statePlayer);
     });
   
     // Ready
-    this.player.addListener('ready', ({ device_id }) => console.log('Ready with Device ID', device_id));
+    this.player.addListener('ready', ({ device_id }) => { console.log('Ready with Device ID', device_id); });
   
     // Not Ready
     this.player.addListener('not_ready', ({ device_id }) => console.log('Device ID has gone offline', device_id));
@@ -176,23 +200,22 @@ class Vocal extends Component {
 
   /**
    * Create an interval to check when player is ready
+   * (Check every second if the player is accessible)
    */
   handleLogin() {
-    if (this.accessToken !== "") {
-      this.setState({ loggedIn: true });
-      // check every second if the player is accessible
-      this.playerCheckInterval = setInterval(() => this.checkForSpotify(), 1000);
-    }
+    const { accessToken } = this.state;
+
+    if (accessToken !== "") this.playerCheckInterval = setInterval(() => this.checkForSpotify(), 1000);
   }
 
   render() {
-    const { currentTrack, previousTrack, nextTrack, command } = this.state;
-
-    console.log("\nRENDER - STATE", this.state);
+    const { currentTrack, previousTrack, nextTrack, command, refreshToken } = this.state;
 
     return (
       <div className={styles.group}>
         <p>Commande : {command || "Parlez un peu..."}</p>
+        <button onClick={() => getNewAccessToken(refreshToken)}>Refresh access</button>
+        <button onClick={() => this.launchSong("The bravery")}>PLAY - The Brave</button>
         {currentTrack && (
           <section className="spotify">
             <div className="spotify__player">
