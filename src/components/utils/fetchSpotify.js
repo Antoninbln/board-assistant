@@ -16,7 +16,6 @@ export const searchSong = (query, accessToken) => {
     .then(res => res.json())
     .then(body => body.tracks.items.map(item => item.uri));
 
-    console.log("SEARCH SONG - ", result);
   return result;
 };
 
@@ -35,7 +34,6 @@ export const playSong = ({
   },
   accessToken,
 }) => {
-  console.log(spotify_uri);
   getOAuthToken(() => {
     fetch(`https://api.spotify.com/v1/me/player/play?device_id=${id}`, {
       method: 'PUT',
@@ -114,16 +112,16 @@ export const getDuration = track => moment(track.duration_ms).format("mm:ss");
  */
 export const getCover = track => {
   const cover = track.album && track.album.images && track.album.images.find(image => image.height === 640);
-
-  if (!cover) {
-    console.error("Can't find a cover for this track");
-    return null;
-  }
+  if (!cover) return null;
   return cover.url;
 };
 
 
-export const getNewAccessToken = (refreshToken) => {
+/**
+ * Get a new AccessToken
+ * @param { String } refreshToken 
+ */
+export const getNewAccessToken = refreshToken => {
   let result = fetch(`http://localhost:8888/refresh_token?refresh_token=${refreshToken}`, {
     method: 'GET'
   })

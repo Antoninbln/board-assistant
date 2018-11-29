@@ -104,8 +104,10 @@ class Vocal extends Component {
   launchSong(query) {
     const { refreshToken } = this.state;
 
+    console.log("== LAUNCH SONG ========");
     getNewAccessToken(refreshToken)
       .then(newToken => {
+        console.log("LAUNCH SONG - THEN ", newToken);
         searchSong(query, newToken) // Search for the track
           .then(track => {
             console.log("track", track);
@@ -118,7 +120,8 @@ class Vocal extends Component {
             }
           })
           .catch(err => console.error("Houston Houston, we got a situation here !", "Cf. Song", err));
-      });    
+      })
+      .catch(err => console.error("Error ", err));    
   }
 
   /**
@@ -151,7 +154,7 @@ class Vocal extends Component {
    * Check if Playback SDK is loaded (cause Lifecycles methods can't do it)
    */
   checkForSpotify() {
-    const { accessToken } = this.state;
+    const { refreshToken } = this.state;
 
     if (window.Spotify) {
       console.log("%c > Spotify accessible", "color: red; font-weight: 600;");
@@ -160,8 +163,9 @@ class Vocal extends Component {
       this.player = new window.Spotify.Player({
         name: "Player board",
         getOAuthToken: cb => {
-          // We still use access token from url params, because this content is called only on mounted compo
-          cb(accessToken);
+          getNewAccessToken(refreshToken)
+            .then(newToken => cb(newToken))
+            .catch(err => console.error("Houston Houston, we got a situation here !", "Cf. CheckForSpotify", err));
         }
       });
 
