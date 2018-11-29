@@ -32,7 +32,7 @@ class Vocal extends Component {
   componentDidMount() {
     this.audio = new Audio();
 
-    // Retrieve papams from URL
+    // Retrieve params from URL
     if (window) {
       const params = getHashParams();
       this.setState({
@@ -104,13 +104,10 @@ class Vocal extends Component {
   launchSong(query) {
     const { refreshToken } = this.state;
 
-    console.log("== LAUNCH SONG ========");
     getNewAccessToken(refreshToken)
       .then(newToken => {
-        console.log("LAUNCH SONG - THEN ", newToken);
         searchSong(query, newToken) // Search for the track
           .then(track => {
-            console.log("track", track);
             if (track.length > 0) {
               playSong({
                 spotify_uri: track,
@@ -121,7 +118,6 @@ class Vocal extends Component {
           })
           .catch(err => console.error("Houston Houston, we got a situation here !", "Cf. Song", err));
       })
-      .catch(err => console.error("Error ", err));    
   }
 
   /**
@@ -190,14 +186,10 @@ class Vocal extends Component {
         previousTrack: statePlayer.track_window && statePlayer.track_window.previous_tracks && statePlayer.track_window.previous_tracks[0],
         nextTrack: statePlayer.track_window && statePlayer.track_window.next_tracks && statePlayer.track_window.next_tracks[0]
       });
-      console.log("State changed", statePlayer);
     });
   
     // Ready
-    this.player.addListener('ready', ({ device_id }) => {
-      console.log('Ready with Device ID', device_id);
-      this.setState({ logged: true });
-    });
+    this.player.addListener('ready', ({ device_id }) => { console.log('Ready with Device ID', device_id); });
   
     // Not Ready
     this.player.addListener('not_ready', ({ device_id }) => console.log('Device ID has gone offline', device_id));
@@ -208,20 +200,16 @@ class Vocal extends Component {
 
   /**
    * Create an interval to check when player is ready
+   * (Check every second if the player is accessible)
    */
   handleLogin() {
     const { accessToken } = this.state;
-    if (accessToken !== "") {
-      this.setState({ loggedIn: true });
-      // check every second if the player is accessible
-      this.playerCheckInterval = setInterval(() => this.checkForSpotify(), 1000);
-    }
+
+    if (accessToken !== "") this.playerCheckInterval = setInterval(() => this.checkForSpotify(), 1000);
   }
 
   render() {
-    const { currentTrack, previousTrack, nextTrack, command, accessToken, refreshToken } = this.state;
-    console.log("\nRENDER - STATE", this.state);
-    console.log("RENDER - Access", accessToken);
+    const { currentTrack, previousTrack, nextTrack, command, refreshToken } = this.state;
 
     return (
       <div className={styles.group}>
