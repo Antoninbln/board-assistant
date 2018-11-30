@@ -234,7 +234,9 @@ class Vocal extends Component {
             {cover && <div className="spotify__player__bg" style={{ backgroundImage: `url(${cover})` }} />}
           </section>
         )}
-        <section className={`${styles.vocal} vocal`}>Commande : {command || "Parlez un peu..."}</section>
+        <section className={`${styles.vocal} vocal`}>
+          <p>{command || "Parlez un peu..."}</p>
+        </section>
       </div>
     );
   }

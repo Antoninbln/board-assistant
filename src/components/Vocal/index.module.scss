@@ -52,8 +52,20 @@
 }
 
 .vocal {
+  position: absolute;
+  display: flex;
+  height: 60px;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  background-color: #121316;
+  color: #fff;
 
   :global {
-
+    p {
+      margin: 0;
+    }
   }
 }
