@@ -211,11 +211,11 @@ class Vocal extends Component {
   render() {
     const { currentTrack, previousTrack, nextTrack, command, refreshToken } = this.state;
 
+    const cover = currentTrack && getCover(currentTrack);
+
     return (
       <div className={styles.group}>
-        <p>Commande : {command || "Parlez un peu..."}</p>
-        <button onClick={() => getNewAccessToken(refreshToken)}>Refresh access</button>
-        <button onClick={() => this.launchSong("The bravery")}>PLAY - The Brave</button>
+        <button onClick={() => this.launchSong("david bowie")}>Play - David Bowie</button>
         {currentTrack && (
           <section className="spotify">
             <div className="spotify__player">
@@ -225,14 +225,16 @@ class Vocal extends Component {
                   : <span>{getArtists(currentTrack)[0]}</span>}
               </h2>
               <p>{getDuration(currentTrack)}</p>
-              {getCover(currentTrack) ? <img src={getCover(currentTrack)} alt="Pochette d'album" /> : <p>No cover available</p>}
+              {cover ? <img className="spotify__player__cover" src={cover} alt="Pochette d'album" /> : <p>No cover available</p>}
               <div className="spotify__player__footer">
                 {previousTrack && <BesideTrack track={previousTrack} />}
                 {nextTrack && <BesideTrack track={nextTrack} isNext />}
               </div>
             </div>
+            {cover && <div className="spotify__player__bg" style={{ backgroundImage: `url(${cover})` }} />}
           </section>
         )}
+        <section className={`${styles.vocal} vocal`}>Commande : {command || "Parlez un peu..."}</section>
       </div>
     );
   }
