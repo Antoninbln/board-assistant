@@ -6,7 +6,8 @@ import Transports from "components/Transports";
 import Vocal from "components/Vocal";
 
 import styles from "./App.module.scss";
-import "assets/stylessheets/index.scss";
+import "assets/css/variables.scss";
+import "assets/css/index.scss";
 
 class App extends Component {
   render() {

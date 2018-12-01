@@ -218,10 +218,13 @@ class Vocal extends Component {
         <button onClick={() => this.launchSong("david bowie")}>Play - David Bowie</button>
         {currentTrack && (
           <section className="spotify">
-            <div className="spotify__player">
+            <div className="spotify__player txt__white">
               <h2><span className="spotify__player__youre-listening-to">Vous écoutez</span><br/>{getTrackName(currentTrack)} - {
                 getArtists(currentTrack).length > 1
-                  ? (getArtists(currentTrack).map((item, index) => <span key={`artist-${index}`}>{!index == 0 && " & "}{item}</span>))
+                  ? getArtists(currentTrack).map(
+                      (item, index) => (
+                        <span key={`artist-${index}`}>{!index == 0 && " & "}{item}</span>
+                      ))
                   : <span>{getArtists(currentTrack)[0]}</span>}
               </h2>
               <p>{getDuration(currentTrack)}</p>
