@@ -28,11 +28,40 @@
           box-shadow: 0px 0px 75px 20px rgba(0, 0, 0, 0.2);
         }
 
-        &__footer {
+        &__footer :local {
           display: flex;
           align-items: center;
-          margin: 0 -150px;
-          margin-top: 15px; 
+          margin: auto;
+          width: 600px;
+          animation-fill-mode: forwards;
+          animation-duration: 0.6s;
+          animation-name: slide;
+        }
+
+        @keyframes slide {
+          0% {
+            opacity: 0;
+            margin-top: -115px;
+          }
+          40% {
+            margin-top: 25px;
+            width: 600px;
+          }
+          65% {
+            opacity: 1;
+            margin-top: 15px;
+          }
+          80% {
+            margin-top: 15px;
+          }
+          90% {
+            margin-top: 15px;
+            width: 925px;
+          }
+          100% {
+            margin-top: 15px;
+            width: 900px;
+          }
         }
 
         &__bg {

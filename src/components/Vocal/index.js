@@ -50,17 +50,24 @@ class Vocal extends Component {
         "teste": () => {
           this.setState({ comand: "test" });
         },
-        "play *song": song => {
-          this.setState({ command: song });
-          this.player && this.launchSong(song);
-        },
+
         "album *album": album => {
           this.setState({ command: album });
           this.player && this.launchAlbum(album);
         },
         "joue *song": song => {
-          this.setState({ command: song });
-          this.player && this.launchSong(song);
+          this.setState({
+            command: song,
+            previousTrack: null,
+            nextTrack: null
+          }, () => this.player && this.launchSong(song));
+        },
+        "play *song": song => {
+          this.setState({
+            command: song,
+            previousTrack: null,
+            nextTrack: null
+          }, () => this.player && this.launchSong(song));
         },
         "stop": () => {
           this.setState({ command: "Stop" });
@@ -71,12 +78,18 @@ class Vocal extends Component {
           this.player && this.player.resume();
         },
         "next": () => {
-          this.setState({ command: "Next" });
-          this.player && this.player.nextTrack();
+          this.setState({
+            command: "Next",
+            previousTrack: null,
+            nextTrack: null
+          }, () => this.player && this.player.nextTrack());
         },
         "previous": () => {
-          this.setState({ command: "Previous" });
-          this.player && this.player.previousTrack();  
+          this.setState({
+            command: "Previous",
+            previousTrack: null,
+            nextTrack: null
+          }, () => this.player && this.player.previousTrack());
         },
         "forward": () => {
           this.setState({ command: "Seek" });
@@ -90,7 +103,7 @@ class Vocal extends Component {
       };
 
       annyang.addCommands(commands);
-      annyang.setLanguage('fr-FR');
+      annyang.setLanguage('en-US');
       annyang.start();
     }
   }
@@ -238,7 +251,7 @@ class Vocal extends Component {
           </section>
         )}
         <section className={`${styles.vocal} vocal`}>
-          <p>{command || "Parlez un peu..."}</p>
+          <p>{command || "Ask something..."}</p>
         </section>
       </div>
     );
