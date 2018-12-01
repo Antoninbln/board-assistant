@@ -103,7 +103,7 @@ class Vocal extends Component {
       };
 
       annyang.addCommands(commands);
-      annyang.setLanguage('en-US');
+      annyang.setLanguage('fr-FR');
       annyang.start();
     }
   }
@@ -242,10 +242,12 @@ class Vocal extends Component {
                 <p>{getDuration(currentTrack)}</p>
               </h2>
               {cover ? <img className="spotify__player__cover" src={cover} alt="Pochette d'album" /> : <p>No cover available</p>}
-              <div className="spotify__player__footer">
-                {previousTrack && <BesideTrack track={previousTrack} />}
-                {nextTrack && <BesideTrack track={nextTrack} isNext />}
-              </div>
+              {(previousTrack || nextTrack) && (
+                <div className="spotify__player__footer">
+                  {previousTrack && <BesideTrack track={previousTrack} />}
+                  {nextTrack && <BesideTrack track={nextTrack} isNext />}
+                </div>
+              )}
             </div>
             {cover && <div className="spotify__player__bg" style={{ backgroundImage: `url(${cover})` }} />}
           </section>

@@ -1,3 +1,5 @@
+@import "../../../assets/css/variables";
+
 .group{
   display: flex;
   align-items: center;
@@ -17,8 +19,10 @@
     .img-container {
       width: 100px;
       min-width: 100px;
+      height: 96px;
       margin-right: 25px;
       margin-left: 0;
+      background: $dark;
 
       img {
         width: 100%;
