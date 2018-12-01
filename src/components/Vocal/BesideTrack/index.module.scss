@@ -1,6 +1,7 @@
 .group{
   display: flex;
   align-items: center;
+  justify-self: start;
 
   :global {
     p, h3 {
@@ -39,6 +40,8 @@
 
 .reversed {
   flex-direction: row-reverse;
+  justify-self: end;
+  margin-left: auto;
 
   :global {
     .content-container {
