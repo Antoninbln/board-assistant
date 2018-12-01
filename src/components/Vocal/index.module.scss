@@ -5,13 +5,23 @@
     .spotify {
       display: flex;
       justify-content: center;
+      color: $white;
 
       &__player {
         text-align: center;
 
-        &__youre-listening-to {
-          color: $white;
-          font-weight: 300;
+        &__head {
+          margin-bottom: 8px;
+
+          .youre-listening-to {
+            font-weight: 300;
+          }
+
+          p {
+            font-weight: 300;
+            margin-top: 4px;
+            font-size: 18px;
+          }
         }
 
         &__cover {
@@ -20,9 +30,9 @@
 
         &__footer {
           display: flex;
-          justify-content: space-between;
           align-items: center;
           margin: 0 -150px;
+          margin-top: 15px; 
         }
 
         &__bg {

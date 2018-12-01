@@ -215,19 +215,19 @@ class Vocal extends Component {
 
     return (
       <div className={styles.group}>
-        <button onClick={() => this.launchSong("david bowie")}>Play - David Bowie</button>
+        {/* <button onClick={() => this.launchSong("david bowie")}>Play - David Bowie</button> */}
         {currentTrack && (
           <section className="spotify">
             <div className="spotify__player txt__white">
-              <h2><span className="spotify__player__youre-listening-to">Vous écoutez</span><br/>{getTrackName(currentTrack)} - {
+              <h2 className="spotify__player__head"><span className="youre-listening-to">Vous écoutez</span><br/>{getTrackName(currentTrack)} - {
                 getArtists(currentTrack).length > 1
                   ? getArtists(currentTrack).map(
                       (item, index) => (
                         <span key={`artist-${index}`}>{!index == 0 && " & "}{item}</span>
                       ))
                   : <span>{getArtists(currentTrack)[0]}</span>}
+                <p>{getDuration(currentTrack)}</p>
               </h2>
-              <p>{getDuration(currentTrack)}</p>
               {cover ? <img className="spotify__player__cover" src={cover} alt="Pochette d'album" /> : <p>No cover available</p>}
               <div className="spotify__player__footer">
                 {previousTrack && <BesideTrack track={previousTrack} />}

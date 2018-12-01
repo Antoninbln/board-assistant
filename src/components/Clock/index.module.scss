@@ -1,7 +1,12 @@
+@import "../../assets/css/variables";
+
 .clock {
-  // color: #fff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: $white;
 
   :global {
-    // color: red;
+    
   }
 }
