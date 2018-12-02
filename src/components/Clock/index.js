@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import styles from "./index.module.scss";
 import getCurrentDate from "../utils/dates";
+import "assets/stylessheets/variables.scss";
 
 class Clock extends Component {
   constructor(props) {
@@ -17,11 +18,11 @@ class Clock extends Component {
   }
 
   render() {
-    if (!this.state.clock) return <div>Load</div>;
+    const { clock } = this.state;
 
     return (
-      <div className={`c-clock ${styles.clock}`}>
-        <span>{this.state.clock}</span>
+      <div className={`c-clock ${styles.clock} sk-skeleton`}>
+        <span className={`${!clock ? "sk-text-short sk-light" : ""}`}>{clock || "&nbps;"}</span>
       </div>
     );
   }
