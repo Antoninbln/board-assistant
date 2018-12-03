@@ -9,8 +9,8 @@ moment.locale("fr", localization);
  */
 export default function getCurrentDate() {
   return {
-    "date": moment().format("DD MMM YYYY HH:mm:ss"),
-    "day": moment().format("DD MMM YYYY"),
+    "date": moment().format("D MMM YYYY HH:mm:ss"),
+    "day": moment().format("D MMMM YYYY"),
     "hours": moment().format("HH"),
     "minutes": moment().format("mm"),
     "seconds": moment().format("ss")
@@ -23,6 +23,6 @@ export default function getCurrentDate() {
  * @return { String }
  */
 export function getCurrentDay(details = false) {
-  if (details) return moment().format("DD MMM YYYY");
-  return moment().format("DD");
+  if (details) return moment().format("D MMM YYYY");
+  return moment().format("D");
 };

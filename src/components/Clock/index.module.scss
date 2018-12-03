@@ -6,24 +6,28 @@
   position: absolute;
   top: 75px;
   left: 100px;
-  color: $light;
+  color: #fff;
 
   :global {
     .c-clock__day {
-      font-size: 2rem;
+      font-size: 1.45rem;
       opacity: 0.7;
+      font-weight: 300;
+      text-align: right;
     }
 
     .c-clock__time {
-      font-size: 2.45rem;
+      display: flex;
+      align-items: center;
+      font-size: 2.5rem;
+      font-weight: 500;
     }
 
     .separator {
       display: inline-block;
       color: $grey;
-      margin: 0 5px;
-      margin-bottom: 0.5rem;
-      font-size: 1.2rem;
+      margin: 0 15px;
+      font-size: 1.1rem;
     }
   }
 }
