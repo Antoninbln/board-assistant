@@ -34,6 +34,9 @@ Then a new tab opens in your favourite browser. If you don't want to initialize 
 ##### 1.3 Initialize Spotify playback *(optional)*
 🚨 *For this part, be sure to have a premium account on Spotify.*
 
+Create an application on Spotify [here](https://developer.spotify.com/dashboard/applications).
+Then fill `CLIENT_ID` and `CLIENT_SECRET`, you're now ready to launch.
+
 ![Splash screen image]("https://github.com/Antoninbln/board-assistant/tree/master/.github/img/login-with-spotify.PNG")
 Click *"Login in"* button.
 
