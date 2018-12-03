@@ -8,20 +8,22 @@ App can be displayed on a browser with a Reaspberry Pi.
 **For short term** : Each kind of information is displayed in a component which is a part of the interface, and with vocal recognition you can play a song from Spotify.
 **For long term** : Each component should began a view, and vocal recognition should be used for navigation through views. This way you can say "Show me the weather", and weather route should be rendered as view.
 
+
 ## Technologies
 - **ReactJS** → [Doc](https://reactjs.org/docs/getting-started.html)
 - **Sass** → [Doc](http://sass-lang.com/documentation/file.SASS_REFERENCE.html)
 - **Spotify API** → [Doc](https://developer.spotify.com/documentation/web-api/)
 - **Annyang** → [Doc](https://www.talater.com/annyang/)
 
-## Installation
 
+## Installation
 
 #### 1. How to launch
 
 
 ##### 1.1 Add config file
 Add `.env` file in *root*. Be sure it follows `.env_example` schema.
+
 
 ##### 1.2 Initialize base app
 In 2 differents terminals type the following commands :
@@ -30,6 +32,7 @@ yarn run server
 yarn run client
 ```
 Then a new tab opens in your favourite browser. If you don't want to initialize spotify API, don't consider next step.
+
 
 ##### 1.3 Initialize Spotify playback *(optional)*
 🚨 *For this part, be sure to have a premium account on Spotify.*
@@ -56,7 +59,12 @@ Special mention for Spotify users ; yYou'll be able to use some vocal commands, 
 - `*anything`: Everything you say which doesn't trigger a command is displayed on screen, so you have a feedback on what is understood by the application.
 - `test`: test state of speech recognition, it arrives that commands are not triggered, or recognition break, so you can test it. 
 
+##### Configuration
+For the moment commands doesn't work on every language. By default Speech Recognition is set in *French*, so you can change it as your convinience. To modify it go in `./src/Vocal/index.js` and change commands set in constant `commands`, then change `annyang.setLanguage('fr-FR');` instruction with the language you want. 
+
+
 ## To contribute
+
 ### Pull requests
 1. Create your branch
 2. Push your work
@@ -66,14 +74,18 @@ Special mention for Spotify users ; yYou'll be able to use some vocal commands, 
     - Call issue in decription like : "Close #120"
     - Respect the PR template
 
+
 ### Commits
 To commits our work, we use a package named [semantic-git-commit-cli](https://www.npmjs.com/package/semantic-git-commit-cli).<br/>
 So you can use `yarn run sgc` to create a commit formalized.
 
+
 ### Issues
 If you think about a new feature, or a bug to fix, please leave an issue and follow the template. 
 
+
 ### More informations
+
 #### About the vocal recognition
 We use [Annyang API](), based on native browser SpeechRecognition API (only available on Chrome and Firefox).
 Thee Doc, it's that it recognizes Noun propers, so we can easily use it to generate requests with artists, albums, tracks names...
