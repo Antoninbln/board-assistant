@@ -1,7 +1,29 @@
+@import "../../assets/stylessheets/variables.scss";
+
 .clock {
-  // color: #fff;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 75px;
+  left: 100px;
+  color: $light;
 
   :global {
-    
+    .c-clock__day {
+      font-size: 2rem;
+      opacity: 0.7;
+    }
+
+    .c-clock__time {
+      font-size: 2.45rem;
+    }
+
+    .separator {
+      display: inline-block;
+      color: $grey;
+      margin: 0 5px;
+      margin-bottom: 0.5rem;
+      font-size: 1.2rem;
+    }
   }
 }
