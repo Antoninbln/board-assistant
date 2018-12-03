@@ -1,5 +1,5 @@
 ## What's the project ?
-Board assistant is a personal project which consist on showing different information on a screen (list non-exaustive) :
+Board assistant is a personal project which consists on showing different information on a screen (list non-exaustive) :
 - Bus hours
 - Weather
 - And it can play spotify songs thanks to vocal recognition
@@ -15,16 +15,43 @@ App can be displayed on a browser with a Reaspberry Pi.
 - **Annyang** → [Doc](https://www.talater.com/annyang/)
 
 ## Installation
-#### Step 1
 
-## How to launch
-To launch the project :
+
+#### 1. How to launch
+
+
+##### 1.1 Add config file
+Add `.env` file in *root*. Be sure it follows `.env_example` schema.
+
+##### 1.2 Initialize base app
+In 2 differents terminals type the following commands :
 ```
-yarn run start  // Dev or Prod
-// or
-yarn run build  // Production
+yarn run server
+yarn run client
 ```
-Be sure to have a `.env` file in *root*.
+Then a new tab opens in your favourite browser. If you don't want to initialize spotify API, don't consider next step.
+
+##### 1.3 Initialize Spotify playback *(optional)*
+🚨 *For this part, be sure to have a premium account on Spotify.*
+
+![Splash screen image]("https://github.com/Antoninbln/board-assistant/tree/master/.github/img/login-with-spotify.PNG")
+Click *"Login in"* button.
+
+Then you are redirected to the App screen.
+
+
+#### 2. How to use
+Special mention for Spotify users ; yYou'll be able to use some vocal commands, here is the list : 
+- `album`: play an album
+- `joue`: play a song (with this you can ask **song title**, **singer name** & **album name** all combined in command)
+- `pause`: pause current track
+- `play`: resume track
+- `suivant`: play next track
+- `précédent`: play previous track
+- `avance`: go forward in the track
+- `recule`: go backward in the track
+- `*anything`: Everything you say which doesn't trigger a command is displayed on screen, so you have a feedback on what is understood by the application.
+- `test`: test state of speech recognition, it arrives that commands are not triggered, or recognition break, so you can test it. 
 
 ## To contribute
 ### Pull requests

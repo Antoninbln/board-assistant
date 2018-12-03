@@ -44,13 +44,9 @@ class Vocal extends Component {
     if (annyang) {
       console.log("%c > Speech recognition accessible", "color: red; font-weight: 600;");
       const commands = {
-        "bonjour": () => {
-          this.setState({ command: "Bonjour !" });
-        },
-        "teste": () => {
+        "test": () => {
           this.setState({ comand: "test" });
         },
-
         "album *album": album => {
           this.setState({ command: album });
           this.player && this.launchAlbum(album);
@@ -62,40 +58,33 @@ class Vocal extends Component {
             nextTrack: null
           }, () => this.player && this.launchSong(song));
         },
-        "play *song": song => {
-          this.setState({
-            command: song,
-            previousTrack: null,
-            nextTrack: null
-          }, () => this.player && this.launchSong(song));
-        },
-        "stop": () => {
+        "pause": () => {
           this.setState({ command: "Stop" });
           this.player && this.player.pause();
         },
-        "go": () => {
+        "play": () => {
           this.setState({ command: "Resume" });
           this.player && this.player.resume();
         },
-        "next": () => {
+        "suivant": () => {
           this.setState({
             command: "Next",
             previousTrack: null,
             nextTrack: null
           }, () => this.player && this.player.nextTrack());
         },
-        "previous": () => {
+        "précédent": () => {
           this.setState({
             command: "Previous",
             previousTrack: null,
             nextTrack: null
           }, () => this.player && this.player.previousTrack());
         },
-        "forward": () => {
+        "avance": () => {
           this.setState({ command: "Seek" });
           this.player && this.player.seek(1000 * 60); // Move to 1 min
         },
-        "backward": () => {
+        "recule": () => {
           this.setState({ command: "Reset" });
           this.player && this.player.seek(0);  
         },
