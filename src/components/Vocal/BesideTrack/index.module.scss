@@ -1,6 +1,10 @@
+@import "../../../assets/css/variables";
+
 .group{
   display: flex;
   align-items: center;
+  justify-self: start;
+  max-width: 47.5%;
 
   :global {
     p, h3 {
@@ -9,20 +13,16 @@
 
     .content-container {
       text-align: left;
-    }
-
-    .reversed {
-      flex-direction: row-reverse;
-
-      .content-container {
-        text-align: right;
-      }
+      flex-shrink: 1;
     }
   
     .img-container {
       width: 100px;
+      min-width: 100px;
+      height: 96px;
       margin-right: 25px;
       margin-left: 0;
+      background: $dark;
 
       img {
         width: 100%;
@@ -39,6 +39,8 @@
 
 .reversed {
   flex-direction: row-reverse;
+  justify-self: end;
+  margin-left: auto;
 
   :global {
     .content-container {

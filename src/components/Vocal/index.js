@@ -50,17 +50,24 @@ class Vocal extends Component {
         "teste": () => {
           this.setState({ comand: "test" });
         },
-        "play *song": song => {
-          this.setState({ command: song });
-          this.player && this.launchSong(song);
-        },
+
         "album *album": album => {
           this.setState({ command: album });
           this.player && this.launchAlbum(album);
         },
         "joue *song": song => {
-          this.setState({ command: song });
-          this.player && this.launchSong(song);
+          this.setState({
+            command: song,
+            previousTrack: null,
+            nextTrack: null
+          }, () => this.player && this.launchSong(song));
+        },
+        "play *song": song => {
+          this.setState({
+            command: song,
+            previousTrack: null,
+            nextTrack: null
+          }, () => this.player && this.launchSong(song));
         },
         "stop": () => {
           this.setState({ command: "Stop" });
@@ -71,12 +78,18 @@ class Vocal extends Component {
           this.player && this.player.resume();
         },
         "next": () => {
-          this.setState({ command: "Next" });
-          this.player && this.player.nextTrack();
+          this.setState({
+            command: "Next",
+            previousTrack: null,
+            nextTrack: null
+          }, () => this.player && this.player.nextTrack());
         },
         "previous": () => {
-          this.setState({ command: "Previous" });
-          this.player && this.player.previousTrack();  
+          this.setState({
+            command: "Previous",
+            previousTrack: null,
+            nextTrack: null
+          }, () => this.player && this.player.previousTrack());
         },
         "forward": () => {
           this.setState({ command: "Seek" });
@@ -211,28 +224,37 @@ class Vocal extends Component {
   render() {
     const { currentTrack, previousTrack, nextTrack, command, refreshToken } = this.state;
 
+    const cover = currentTrack && getCover(currentTrack);
+
     return (
       <div className={styles.group}>
-        <p>Commande : {command || "Parlez un peu..."}</p>
-        <button onClick={() => getNewAccessToken(refreshToken)}>Refresh access</button>
-        <button onClick={() => this.launchSong("The bravery")}>PLAY - The Brave</button>
+        {/* <button onClick={() => this.launchSong("david bowie")}>Play - David Bowie</button> */}
         {currentTrack && (
           <section className="spotify">
-            <div className="spotify__player">
-              <h2><span className="spotify__player__youre-listening-to">Vous écoutez</span><br/>{getTrackName(currentTrack)} - {
+            <div className="spotify__player txt__white">
+              <h2 className="spotify__player__head"><span className="youre-listening-to">Vous écoutez</span><br/>{getTrackName(currentTrack)} - {
                 getArtists(currentTrack).length > 1
-                  ? (getArtists(currentTrack).map((item, index) => <span key={`artist-${index}`}>{!index == 0 && " & "}{item}</span>))
+                  ? getArtists(currentTrack).map(
+                      (item, index) => (
+                        <span key={`artist-${index}`}>{!index == 0 && " & "}{item}</span>
+                      ))
                   : <span>{getArtists(currentTrack)[0]}</span>}
+                <p>{getDuration(currentTrack)}</p>
               </h2>
-              <p>{getDuration(currentTrack)}</p>
-              {getCover(currentTrack) ? <img src={getCover(currentTrack)} alt="Pochette d'album" /> : <p>No cover available</p>}
-              <div className="spotify__player__footer">
-                {previousTrack && <BesideTrack track={previousTrack} />}
-                {nextTrack && <BesideTrack track={nextTrack} isNext />}
-              </div>
+              {cover ? <img className="spotify__player__cover" src={cover} alt="Pochette d'album" /> : <p>No cover available</p>}
+              {(previousTrack || nextTrack) && (
+                <div className="spotify__player__footer">
+                  {previousTrack && <BesideTrack track={previousTrack} />}
+                  {nextTrack && <BesideTrack track={nextTrack} isNext />}
+                </div>
+              )}
             </div>
+            {cover && <div className="spotify__player__bg" style={{ backgroundImage: `url(${cover})` }} />}
           </section>
         )}
+        <section className={`${styles.vocal} vocal`}>
+          <p>{command || "Ask something..."}</p>
+        </section>
       </div>
     );
   }

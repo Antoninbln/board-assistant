@@ -3,8 +3,8 @@ import { getArtists, getCover, getTrackName } from "../../utils/fetchSpotify";
 
 import styles from "./index.module.scss";
 
-const BesideTrack = ({ track, isNext }) => (
-  <div className={`spotify__beside-track ${styles.group} ${ isNext ? `${styles.reversed} reversed` : "" }`}>
+const BesideTrack = ({ track, isNext, className }) => (
+  <div className={`spotify__beside-track ${styles.group} ${className} ${ isNext ? `${styles.reversed} reversed` : "" }`}>
     <div className={`img-container ${ isNext ? "reversed" : "" }`}>
       <img src={getCover(track)} alt="Cover next track" />
     </div>
