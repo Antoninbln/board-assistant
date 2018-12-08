@@ -12,11 +12,14 @@ import "assets/css/index.scss";
 class App extends Component {
   render() {
     return (
-      <div className={`App ${styles.app}`}>
-        <header className="App-header">
+      <div className={`app ${styles.app}`}>
+        <header className="app-header">
           <Clock />
-          <Vocal />
-        </header>
+          </header>
+          <main className="app-main">
+            <Vocal />
+            <Weather />
+          </main>
       </div>
     );
   }

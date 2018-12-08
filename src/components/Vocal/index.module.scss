@@ -1,6 +1,9 @@
 @import "../../assets/css/variables";
 
 .group {
+  margin: auto;
+  display: flex;
+
   :global {
     .spotify {
       display: flex;

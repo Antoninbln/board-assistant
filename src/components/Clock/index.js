@@ -2,7 +2,6 @@ import React, { Component } from "react";
 
 import styles from "./index.module.scss";
 import getCurrentDate from "../utils/dates";
-import "assets/stylessheets/variables.scss";
 
 class Clock extends Component {
   constructor(props) {

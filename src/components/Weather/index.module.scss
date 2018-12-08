@@ -1,0 +1,13 @@
+@import "../../assets/css/variables";
+
+.weather {
+  color: $white;
+  width: 50%;
+  align-self: flex-end;
+  justify-self: flex-end;
+  
+
+  :global {
+
+  }
+}

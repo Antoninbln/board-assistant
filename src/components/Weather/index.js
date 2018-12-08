@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { fetchWeather, kelvinToCelsius, windDirection } from "../utils/weather";
 import wordFilter from "../utils/wordFilter";
 import { metersSecondToKilometersHour } from "../utils/unitConverter";
+import styles from "./index.module.scss";
 
 // @TODO : => Antonin (doc : https://openweathermap.org/forecast5)
 // - Ajouter les bons formatq de date
@@ -39,7 +40,7 @@ class Weather extends Component {
     if (!data) return <div>Loading</div>;
 
     return (
-      <div className={`c-transports-details`}>
+      <div className={`c-weather ${styles.weather}`}>
         <h2>{data.city.name}, {data.city.country}</h2>
         <div>
           <h3>Les 5 prochains jours</h3>
