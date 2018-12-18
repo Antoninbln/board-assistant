@@ -4,6 +4,7 @@ import { playSong, searchSong, searchAlbum, getArtists, getCover, getTrackName, 
 
 import styles from "./index.module.scss";
 import BesideTrack from "./BesideTrack";
+import CarouselTracks from "./CarouselTracks";
 
 class Vocal extends Component {
   constructor(props) {
@@ -230,13 +231,14 @@ class Vocal extends Component {
                   : <span>{getArtists(currentTrack)[0]}</span>}
                 <p>{getDuration(currentTrack)}</p>
               </h2>
-              {cover ? <img className="spotify__player__cover" src={cover} alt="Pochette d'album" /> : <p>No cover available</p>}
+              <CarouselTracks cover={cover} previousTrack={previousTrack} nextTrack={nextTrack} />
+              {/*{cover ? <img className="spotify__player__cover" src={cover} alt="Pochette d'album" /> : <p>No cover available</p>}
               {(previousTrack || nextTrack) && (
                 <div className="spotify__player__footer">
                   {previousTrack && <BesideTrack track={previousTrack} />}
                   {nextTrack && <BesideTrack track={nextTrack} isNext />}
                 </div>
-              )}
+              )}*/}
             </div>
             {cover && <div className="spotify__player__bg" style={{ backgroundImage: `url(${cover})` }} />}
           </section>

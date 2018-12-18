@@ -1,11 +1,15 @@
 @import "../../assets/css/variables";
 
 .group {
+  display: flex;
+  height: calc(100vh - 50px);
+
   :global {
     .spotify {
       display: flex;
       justify-content: center;
       color: $white;
+      margin: auto;
 
       &__player {
         text-align: center;
