@@ -1,13 +1,4 @@
 $offset: 52%;
-$randomColor: random(10);
-// Blue (Vision of grandeur) default
-$color1: #000046;
-$color2: #1cb5e0;
-@if $randomColor != 1 {
-  // Purple / pink (Sublime Light)
-  $color1: #fc5c7d;
-  $color2: #6a82fb;
-}
 
 :global {
   .spotify {
@@ -18,27 +9,24 @@ $color2: #1cb5e0;
       align-items: center;
       margin-top: 3rem;
 
-      &__besideTrack {
+      &__beside-container {
+        display: flex;
+        align-items: center;
         position: absolute;
         z-index: 5;
-        max-width: 320px;
-        width: 40%;
-        box-shadow: 0px 0px 75px 20px rgba(0, 0, 0, 0.2);
-        opacity: 0.7;
+        height: 100%;
+        width: 550px;
 
-        &.noCover {
-          height: 256px;
-          background: $color1;
-          background: -webkit-linear-gradient(to bottom, $color1, $color2);
-          background: linear-gradient(to bottom, $color1, $color2);
-        }
+        &__track {
+          flex: 1;
+          height: 75%;
+          box-shadow: 0px 0px 75px 20px rgba(0, 0, 0, 0.2);
+          opacity: 0.7;
 
-        &.previousTrack {
-          right: $offset;
-        }
-
-        &.nextTrack {
-          left: $offset;
+          &.no-cover {
+            opacity: 0.5;
+            background: black;
+          }
         }
       }
 
@@ -48,6 +36,11 @@ $color2: #1cb5e0;
         width: 55%;
         max-width: 640px;
         box-shadow: 0px 0px 75px 20px rgba(0, 0, 0, 0.2);
+
+        &.noCurrentCover {
+          height: 350px;
+          width: 350px;
+        }
       }
     }
   }
