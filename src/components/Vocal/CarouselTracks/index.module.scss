@@ -1,4 +1,13 @@
 $offset: 52%;
+$randomColor: random(10);
+// Blue (Vision of grandeur) default
+$color1: #000046;
+$color2: #1cb5e0;
+@if $randomColor != 1 {
+  // Purple / pink (Sublime Light)
+  $color1: #fc5c7d;
+  $color2: #6a82fb;
+}
 
 :global {
   .spotify {
@@ -16,6 +25,13 @@ $offset: 52%;
         width: 40%;
         box-shadow: 0px 0px 75px 20px rgba(0, 0, 0, 0.2);
         opacity: 0.7;
+
+        &.noCover {
+          height: 256px;
+          background: $color1;
+          background: -webkit-linear-gradient(to bottom, $color1, $color2);
+          background: linear-gradient(to bottom, $color1, $color2);
+        }
 
         &.previousTrack {
           right: $offset;
