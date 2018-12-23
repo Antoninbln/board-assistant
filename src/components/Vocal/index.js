@@ -255,7 +255,7 @@ class Vocal extends Component {
               ) : (
                 <div
                   className="spotify__player__bg"
-                  style={{ background: `${color1}`, background: `linear-gradient(to bottom, ${color1}, ${color2})` }}
+                  style={{ background: `${color1}`, background: `linear-gradient(45deg, ${color1}, ${color2})` }}
                 />
               )
             }

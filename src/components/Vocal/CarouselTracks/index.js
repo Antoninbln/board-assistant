@@ -27,7 +27,7 @@ const CarouselTracks = ({ cover, previousTrack, nextTrack, color1, color2 }) => 
       ) : (
         <div
           className="spotify__carousel__currentTrack noCurrentCover"
-          style={{ background: `${color1}`, background: `linear-gradient(to bottom, ${color1}, ${color2})` }}
+          style={{ background: `${color1}`, background: `linear-gradient(45deg, ${color1}, ${color2})` }}
         />
       )
     }
