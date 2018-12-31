@@ -53,30 +53,6 @@
             width: 900px;
           }
         }
-
-        &__bg {
-          position: absolute;
-          height: 100vh;
-          width: 100vw;
-          top: 0;
-          left: 0;
-          background-repeat: no-repeat;
-          background-position: center;
-          background-size: cover;
-          z-index: -1;
-          filter: blur(15px);
-          transform: scale(1.05);
-
-          &::after {
-            content: "";
-            position: absolute;
-            height: 100%;
-            width: 100%;
-            top: 0;
-            left: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-          }
-        }
       }
     }
   }

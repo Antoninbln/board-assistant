@@ -6,12 +6,6 @@ import styles from "./index.module.scss";
 import BesideTrack from "./BesideTrack";
 import CarouselTracks from "./CarouselTracks";
 
-const GRADIENTS = [
-  { color1: "#FC466B", color2: "#3F5EFB" },
-  { color1: "#fc5c7d", color2: "#6a82fb" },
-  { color1: "#FC354C", color2: "#0ABFBC" },
-];
-
 class Vocal extends Component {
   constructor(props) {
     super(props);
@@ -25,7 +19,6 @@ class Vocal extends Component {
       spotifyLogged: false,
       accessToken: null,
       refreshToken: null,
-      randomColors: GRADIENTS[Math.floor(Math.random()*GRADIENTS.length)],
     };
 
     this.player = null;
@@ -79,16 +72,14 @@ class Vocal extends Component {
             command: "Next",
             previousTrack: null,
             nextTrack: null,
-            randomColors: GRADIENTS[Math.floor(Math.random()*GRADIENTS.length)],
-          }, () => this.player && this.player.nextTrack());
+          }, () => this.player && this.player.nextTrack() && this.refs.carouselTracks.updateRandomGradient());
         },
         "précédent": () => {
           this.setState({
             command: "Previous",
             previousTrack: null,
             nextTrack: null,
-            randomColors: GRADIENTS[Math.floor(Math.random()*GRADIENTS.length)],
-          }, () => this.player && this.player.previousTrack());
+          }, () => this.player && this.player.previousTrack() && this.refs.carouselTracks.updateRandomGradient());
         },
         "avance": () => {
           this.setState({ command: "Seek" });
@@ -221,8 +212,7 @@ class Vocal extends Component {
   }
 
   render() {
-    const { currentTrack, previousTrack, nextTrack, command, refreshToken, randomColors } = this.state;
-    const { color1, color2 } = randomColors;
+    const { currentTrack, previousTrack, nextTrack, command, refreshToken } = this.state;
 
     const cover = currentTrack && getCover(currentTrack);
 
@@ -242,23 +232,12 @@ class Vocal extends Component {
                 <p>{getDuration(currentTrack)}</p>
               </h2>
               <CarouselTracks
+                ref="carouselTracks"
                 cover={cover}
                 previousTrack={previousTrack}
                 nextTrack={nextTrack}
-                color1={color1}
-                color2={color2}
               />
             </div>
-            {cover
-              ? (
-                <div className="spotify__player__bg" style={{ backgroundImage: `url(${cover})` }} />
-              ) : (
-                <div
-                  className="spotify__player__bg"
-                  style={{ background: `${color1}`, background: `linear-gradient(45deg, ${color1}, ${color2})` }}
-                />
-              )
-            }
           </section>
         )}
         <section className={`${styles.vocal} vocal`}>
