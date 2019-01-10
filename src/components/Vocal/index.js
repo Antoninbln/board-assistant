@@ -4,6 +4,7 @@ import { playSong, searchSong, searchAlbum, getArtists, getCover, getTrackName, 
 
 import styles from "./index.module.scss";
 import BesideTrack from "./BesideTrack";
+import CarouselTracks from "./CarouselTracks";
 
 class Vocal extends Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class Vocal extends Component {
       commandType: "",
       spotifyLogged: false,
       accessToken: null,
-      refreshToken: null
+      refreshToken: null,
     };
 
     this.player = null;
@@ -70,15 +71,15 @@ class Vocal extends Component {
           this.setState({
             command: "Next",
             previousTrack: null,
-            nextTrack: null
-          }, () => this.player && this.player.nextTrack());
+            nextTrack: null,
+          }, () => this.player && this.player.nextTrack() && this.refs.carouselTracks.updateRandomGradient());
         },
         "précédent": () => {
           this.setState({
             command: "Previous",
             previousTrack: null,
-            nextTrack: null
-          }, () => this.player && this.player.previousTrack());
+            nextTrack: null,
+          }, () => this.player && this.player.previousTrack() && this.refs.carouselTracks.updateRandomGradient());
         },
         "avance": () => {
           this.setState({ command: "Seek" });
@@ -230,15 +231,13 @@ class Vocal extends Component {
                   : <span>{getArtists(currentTrack)[0]}</span>}
                 <p>{getDuration(currentTrack)}</p>
               </h2>
-              {cover ? <img className="spotify__player__cover" src={cover} alt="Pochette d'album" /> : <p>No cover available</p>}
-              {(previousTrack || nextTrack) && (
-                <div className="spotify__player__footer">
-                  {previousTrack && <BesideTrack track={previousTrack} />}
-                  {nextTrack && <BesideTrack track={nextTrack} isNext />}
-                </div>
-              )}
+              <CarouselTracks
+                ref="carouselTracks"
+                cover={cover}
+                previousTrack={previousTrack}
+                nextTrack={nextTrack}
+              />
             </div>
-            {cover && <div className="spotify__player__bg" style={{ backgroundImage: `url(${cover})` }} />}
           </section>
         )}
         <section className={`${styles.vocal} vocal`}>

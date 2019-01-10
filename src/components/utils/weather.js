@@ -2,7 +2,6 @@ const baseUrl = "http://api.openweathermap.org/data/2.5";
 const apiKey = "&APPID=e3ec2876f020b69df62826855fe1bf38";
 
 export const fetchWeather = (lang) => {
-
   return fetch(`${baseUrl}/forecast?q=Montreuil,fr${apiKey}&lang=${lang}`)
     .then(res => {
       return res.json();

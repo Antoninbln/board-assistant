@@ -2,9 +2,12 @@
 
 .weather {
   color: $white;
-  width: 50%;
+  width: 200px;
+  margin-right: 100px;
+  margin-top: 75px;
   align-self: flex-end;
   justify-self: flex-end;
+  background: rgba(255, 255, 255, 0.1);
   
 
   :global {
