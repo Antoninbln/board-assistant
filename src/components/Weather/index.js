@@ -50,7 +50,7 @@ class Weather extends Component {
     const { data, isNextWeatherShowed, isCurrWeatherShowed } = this.state;
     console.log("Data", data);
 
-    if (!data.length > 0) return <div style={{ color: "#fff" }}>La météo est en chargement...</div>;
+    if (!data.length > 0) return <div className={`c-weather ${styles.weather}`} style={{ color: "#fff" }}>La météo est en chargement...</div>;
 
     return (
       <div className={`c-weather ${styles.weather}`}>

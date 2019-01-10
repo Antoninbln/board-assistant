@@ -8,7 +8,9 @@
   align-self: flex-end;
   justify-self: flex-end;
   background: rgba(255, 255, 255, 0.1);
-  
+  position: absolute;
+  right: 0;
+  top: 0;
 
   :global {
 
