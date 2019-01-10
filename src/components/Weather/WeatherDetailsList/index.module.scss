@@ -1,0 +1,29 @@
+.group {
+  display: flex;
+  flex-flow: row wrap;
+
+  :global {
+    .weather-details {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100px;
+      width: 100px;
+      border-radius: 8px;
+      background-color: red;
+
+      & > p {
+        margin: 0;
+      }
+
+      &__legend {
+
+      }
+
+      &__value {
+
+      }
+    }
+  }
+}

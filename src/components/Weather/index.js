@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
-import { fetchWeather, kelvinToCelsius, windDirection } from "../utils/weather";
+import WeatherDetailsList from "./WeatherDetailsList"
+import { fetchWeather, kelvinToCelsius, windDirection, getWeatherEditorial } from "../utils/weather";
 import wordFilter from "../utils/wordFilter";
 import { metersSecondToKilometersHour } from "../utils/unitConverter";
 import styles from "./index.module.scss";
@@ -18,44 +19,63 @@ class Weather extends Component {
     super(props);
 
     this.state = {
-      data: {},
+      data: null,
       isNextWeatherShowed: false,
-      isCurrWeatherShowed: false,
+      isCurrWeatherShowed: true,
       lang: this.props.lang || "fr"
     }
+
+    this.getTitle = this.getTitle.bind(this);
   }
 
   componentDidMount() {
     const { lang } = this.state;
 
-    const weather = fetchWeather(lang)
-      .then(res => {
-        console.log("RESULTS", res);
-        const weather_day = res.list;
-        const weather_week = res.list.shift(); // Remove first element
-
+    fetchWeather(lang)
+      .then(res =>
         this.setState({
           data: {
-            city: weather.city,
-            weather_day,
-            weather_week
+            city: res.city,
+            weather_day: res.list.shift(),
+            weather_week: res.list // Remove first element
           }
-        }, () => console.log("DATA LOADED"))
-      }
-    );
+        })
+      );
   }
 
+  /**
+   * 
+   */
+  getTitle(obj) {
+    if (obj && obj.main && obj.main.temp && obj.weather && obj.weather.length > 0) {
+      return (
+        <h2>{kelvinToCelsius(obj.main.temp)}°C{" "}
+          <span className="subtitle">It's {getWeatherEditorial(obj.weather[0]).adj}</span>
+        </h2>
+      );
+    }
+    else return false;
+  }
 
   render() {
     const { data, isNextWeatherShowed, isCurrWeatherShowed } = this.state;
     console.log("Data", data);
 
-    if (!data.length > 0) return <div className={`c-weather ${styles.weather}`} style={{ color: "#fff" }}>La météo est en chargement...</div>;
+    if (!data) return <div className={`c-weather ${styles.weather}`} style={{ color: "#fff" }}>La météo est en chargement...</div>;
 
     return (
       <div className={`c-weather ${styles.weather}`}>
-        <h2>{data.city.name}, {data.city.country}</h2>
-        {data.weather_day && isCurrWeatherShowed && (
+        {data.weather_day && (
+          <React.Fragment>
+            {this.getTitle(data.weather_day)}
+            <h3 className="weather__day__subtitle">Détails</h3>
+            {data.weather_day.weather && data.weather_day.weather.length > 0 && isCurrWeatherShowed && (
+              <WeatherDetailsList weather={data.weather_day} />
+            )}
+          </React.Fragment>
+        )}
+
+        {/* {data.weather_day && isCurrWeatherShowed && (
           <div className="weather__day">
             {data.weather_week ? data.weather_week.map(
               (item, index) => (
@@ -64,15 +84,15 @@ class Weather extends Component {
                   <p className="list--temperature">T° <span className="value">{kelvinToCelsius(item.main.temp)}°C</span></p>  
                   <p className="list--humidity">Humidité <span className="value">{item.main.humidity}%</span></p>  
                   <p className="list--sky"><span className="value">{wordFilter(item.weather[0].main)}</span></p> {/* Ajouter une gestion de la liste*/}  
-                  <p className="list--wind">Vent <span className="value">{metersSecondToKilometersHour(item.wind.speed)}km/h, {windDirection(item.wind.deg)}</span></p> Détecter l'orientation cardinale  
+                  {/* <p className="list--wind">Vent <span className="value">{metersSecondToKilometersHour(item.wind.speed)}km/h, {windDirection(item.wind.deg)}</span></p> Détecter l'orientation cardinale  
                 </div>
               )
             ) : "Aucune données pour les 5 prochains jours"}
           </div>
-        )}
+        )} */}
         <div className="weather__week">
           <h3>Les 5 prochains jours</h3>
-          {data.weather_week ? data.weather_week.map(
+          {data.weather_week && isNextWeatherShowed ? data.weather_week.map(
             (item, index) => (
               <div key={`day-${index}`}>
                 <h4 className="list--date">{item.dt_txt}</h4>  
