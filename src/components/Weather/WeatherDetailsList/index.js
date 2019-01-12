@@ -1,13 +1,11 @@
 import React from "react";
 
-import { windDirection } from "../../utils/weather.js";
-import { getUniqueId } from "../../utils";
+import { windDirection } from "utils/weather.js";
+import { getUniqueId } from "utils";
 import { getTemplate } from "./templates.js";
 import styles from "./index.module.scss";
 
-const WeatherDetailsList = ({ weather, isNext = false }) => {
-  console.log("WEATHER", weather, weather.wind.deg, windDirection(weather.wind.deg));
-
+const WeatherDetailsList = ({ weather }) => {
   //{data.weather_day.weather.map(item => )}
 
   return (

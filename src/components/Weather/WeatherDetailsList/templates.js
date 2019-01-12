@@ -1,5 +1,10 @@
-import { milesToKilometers } from "../../utils/unitConverter.js";
-import { windDirection } from "../../utils/weather.js";
+import { milesToKilometers } from "utils/unitConverter.js";
+import { windDirection } from "utils/weather.js";
+
+import humidityLogo from "./assets/icon-humidity.svg";
+import cloudsLogo from "./assets/icon-cloud.svg";
+import windOrientationLogo from "./assets/icon-compass.svg";
+import windSpeedLogo from "./assets/icon-wind.svg";
 
 /**
  * Return template of weather details (only for visual objects)
@@ -12,14 +17,14 @@ export const getTemplate = obj => {
     switch (obj[0]) { // We test keys of obj
       case "main":
         return obj[1].humidity && [{
-          icon: "",
+          icon: humidityLogo,
           legend: "Humidity",
-          value: ""
+          value: `${obj[1].humidity}%`
         }];
   
       case "clouds":
         return obj[1].all && [{
-          icon: "",
+          icon: cloudsLogo,
           legend: "Clouds",
           value: `${obj[1].all}%`
         }];
@@ -29,14 +34,14 @@ export const getTemplate = obj => {
 
         if (obj[1].speed) {
           results.push({
-            icon: "",
+            icon: windOrientationLogo,
             legend: "Wind speed",
             value: `${milesToKilometers(obj[1].speed)} km/h`
           });
         }
         if (obj[1].deg) {
           results.push({
-            icon: "",
+            icon: windSpeedLogo,
             legend: "Wind °",
             value: windDirection(obj[1].deg)
           });

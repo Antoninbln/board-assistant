@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import annyang from "annyang";
-import { playSong, searchSong, searchAlbum, getArtists, getCover, getTrackName, getDuration, getHashParams, getNewAccessToken } from "../utils/fetchSpotify";
+import { playSong, searchSong, searchAlbum, getArtists, getCover, getTrackName, getDuration, getHashParams, getNewAccessToken } from "utils/fetchSpotify";
 
 import styles from "./index.module.scss";
 import BesideTrack from "./BesideTrack";

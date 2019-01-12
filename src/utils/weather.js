@@ -51,5 +51,8 @@ export const getWeatherEditorial = weather => {
   switch(weather.main) {
     case "Clouds":
       return { icon: "", adj: "cloudy", decription: `${weather.description.charAt(0).toUpperCase()}` };
+    
+    default:
+      return false;
   }
 }
