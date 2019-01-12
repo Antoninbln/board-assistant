@@ -10,7 +10,7 @@ const WeatherDetailsList = ({ weather }) => {
 
   return (
     <div className={`${styles.group} c-weather-details-list`}>
-      <h3 className="weather-details-list__title">Detail</h3>
+      {/* <h3 className="weather-details-list__title">Detail</h3> */}
       <div className="weather-details-list__list">
         {Object.entries(weather).map(key => { // Mapping over keys
           const data = getTemplate(key);

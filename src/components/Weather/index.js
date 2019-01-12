@@ -51,7 +51,9 @@ class Weather extends Component {
     if (obj && obj.main && obj.main.temp && obj.weather && obj.weather.length > 0) {
       return (
         <h2>
-          <span className="title-big">{kelvinToCelsius(obj.main.temp)}</span>°C{" "}
+          <span className="title-big">{kelvinToCelsius(obj.main.temp)}</span>
+          <span className="title-small">°C</span>
+          <span className="subtitle">, It's sunny.</span>
           {obj.weather[0] && getWeatherEditorial(obj.weather[0]) &&
             <span className="subtitle">It's {getWeatherEditorial(obj.weather[0]).adj}</span>
           }
@@ -77,20 +79,22 @@ class Weather extends Component {
             )}
           </React.Fragment>
         )}
-        <div className="weather__week">
-          <h3>Les 5 prochains jours</h3>
-          {data.weather_week && isNextWeatherShowed ? data.weather_week.map(
-            (item, index) => (
-              <div key={`day-${index}`}>
-                <h4 className="list--date">{item.dt_txt}</h4>  
-                <p className="list--temperature">T° <span className="value">{kelvinToCelsius(item.main.temp)}°C</span></p>  
-                <p className="list--humidity">Humidité <span className="value">{item.main.humidity}%</span></p>  
-                <p className="list--sky"><span className="value">{wordFilter(item.weather[0].main)}</span></p> {/* Ajouter une gestion de la liste*/}  
-                <p className="list--wind">Vent <span className="value">{metersSecondToKilometersHour(item.wind.speed)}km/h, {windDirection(item.wind.deg)}</span></p> {/* Détecter l'orientation cardinale */}  
-              </div>
-            )
-          ) : "Aucune données pour les 5 prochains jours"}
-        </div>
+        {data.weather_week && isNextWeatherShowed && (
+          <div className="weather__week">
+            <h3>Next</h3>
+            {data.weather_week.map(
+              (item, index) => (
+                <div key={`day-${index}`}>
+                  <h4 className="list--date">{item.dt_txt}</h4>  
+                  <p className="list--temperature">T° <span className="value">{kelvinToCelsius(item.main.temp)}°C</span></p>  
+                  <p className="list--humidity">Humidité <span className="value">{item.main.humidity}%</span></p>  
+                  <p className="list--sky"><span className="value">{wordFilter(item.weather[0].main)}</span></p> {/* Ajouter une gestion de la liste*/}  
+                  <p className="list--wind">Vent <span className="value">{metersSecondToKilometersHour(item.wind.speed)}km/h, {windDirection(item.wind.deg)}</span></p> {/* Détecter l'orientation cardinale */}  
+                </div>
+              )
+            )}
+          </div>
+        )}
       </div>
     );
   }
