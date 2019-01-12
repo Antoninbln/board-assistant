@@ -1,6 +1,7 @@
 import React from "react";
 
 import { windDirection } from "../../utils/weather.js";
+import { getUniqueId } from "../../utils";
 import { getTemplate } from "./templates.js";
 import styles from "./index.module.scss";
 
@@ -19,8 +20,8 @@ const WeatherDetailsList = ({ weather, isNext = false }) => {
 
         return data.map(item => (
           // Mapping over values (usually for wind object)
-          <div className="weather-details">
-            {/* img className="weather-details__icon"  */ console.log("ITEM", item)}
+          <div key={getUniqueId()} className="weather-details">
+            <img className="weather-details__icon" src={item.icon} alt="Logo décoratif" />
             <p className="weather-details__legend">{item.legend}</p>
             <p className="weather-details__value">{item.value}</p>
           </div>)

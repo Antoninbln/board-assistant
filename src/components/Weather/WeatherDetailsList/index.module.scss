@@ -1,6 +1,8 @@
 .group {
   display: flex;
   flex-flow: row wrap;
+  justify-content: space-between;
+  width: 230px;
 
   :global {
     .weather-details {
@@ -8,22 +10,41 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100px;
-      width: 100px;
+      height: 75px;
+      width: 75px;
       border-radius: 8px;
-      background-color: red;
+      // background-color:rgba(0, 0, 0, 0.2);
+      padding: 15px;
+      background: violet;
+      margin-bottom: 20px;
 
       & > p {
-        margin: 0;
+        // margin: 0;
+        // font-weight: 700;
+      }
+
+      &__icon {
+        display: flex;
+        justify-self: flex-start;
       }
 
       &__legend {
-
+        color: $grey;
+        display: flex;
+        justify-self: flex-start;
+        font-size: 13px;
+        margin-top: 5px;
       }
 
       &__value {
-
+        display: flex;
+        justify-self: flex-end;
+        font-size: 18px;
       }
+    }
+
+    .weather-details:nth-child(3n + 2) {
+      margin-bottom: 0;
     }
   }
 }

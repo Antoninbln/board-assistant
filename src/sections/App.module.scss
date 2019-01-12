@@ -1,11 +1,9 @@
-@import "../assets/css/variables";
-
 .app {
+  display: flex;
   padding: 0;
   margin: 0;
-  font-family: 'Source Sans Pro', sans-serif;
-  display: flex;
-
+  font-family: $font, $font-secondary, sans-serif;
+  font-weight: 300;
 
   &-header {}
 
