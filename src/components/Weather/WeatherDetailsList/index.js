@@ -10,21 +10,24 @@ const WeatherDetailsList = ({ weather }) => {
 
   return (
     <div className={`${styles.group} c-weather-details-list`}>
-      {Object.entries(weather).map(key => { // Mapping over keys
-        const data = getTemplate(key);
-        if (!data) return false;
+      <h3 className="weather-details-list__title">Detail</h3>
+      <div className="weather-details-list__list">
+        {Object.entries(weather).map(key => { // Mapping over keys
+          const data = getTemplate(key);
+          if (!data) return false;
 
-        console.log("DATA", data);
+          console.log("DATA", data);
 
-        return data.map(item => (
-          // Mapping over values (usually for wind object)
-          <div key={getUniqueId()} className="weather-details">
-            <img className="weather-details__icon" src={item.icon} alt="Logo décoratif" />
-            <p className="weather-details__legend">{item.legend}</p>
-            <p className="weather-details__value">{item.value}</p>
-          </div>)
-        );
-      })}
+          return data.map(item => (
+            // Mapping over values (usually for wind object)
+            <div key={getUniqueId()} className="weather-details">
+              <img className="weather-details__icon" src={item.icon} alt="Logo décoratif" />
+              {/* <p className="weather-details__legend">{item.legend}</p> */}
+              <p className="weather-details__value">{item.value}</p>
+            </div>)
+          );
+        })}
+      </div>
     </div>
   );
 };

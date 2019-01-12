@@ -12,13 +12,19 @@
   }
 
   @font-face {
+    font-family: "Circular Black";
+    src: url("assets/fonts/circular.otf") format("opentype");
+  }
+
+  @font-face {
     font-family: "Circular Book";
     src: url("assets/fonts/CircularStd-book.otf") format("opentype");
   }
 
   // Fonts
-  $font: "Circular Book";
-  $font-secondary: "Circular";
+  $font: "Circular";
+  $font-secondary: "Circular Book";
+  $font-ternary: "Circular Black";
 
   // Styles
   :global {

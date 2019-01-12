@@ -11,11 +11,13 @@
 
   :global {
     h2 {
-      font-size: 25px;
       font-family: $font;
+      font-size: 25px;
+      letter-spacing: 3px;
 
       .title-big {
         font-size: 55px;
+        margin-right: 5px;
       }
     }
 

@@ -72,7 +72,6 @@ class Weather extends Component {
         {data.weather_day && (
           <React.Fragment>
             {this.getTitle(data.weather_day)}
-            <h3 className="weather__day__subtitle">Détails</h3>
             {data.weather_day.weather && data.weather_day.weather.length > 0 && isCurrWeatherShowed && (
               <WeatherDetailsList weather={data.weather_day} />
             )}

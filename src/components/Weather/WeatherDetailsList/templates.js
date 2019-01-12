@@ -34,14 +34,14 @@ export const getTemplate = obj => {
 
         if (obj[1].speed) {
           results.push({
-            icon: windOrientationLogo,
+            icon: windSpeedLogo,
             legend: "Wind speed",
             value: `${milesToKilometers(obj[1].speed)} km/h`
           });
         }
         if (obj[1].deg) {
           results.push({
-            icon: windSpeedLogo,
+            icon: windOrientationLogo,
             legend: "Wind °",
             value: windDirection(obj[1].deg)
           });
