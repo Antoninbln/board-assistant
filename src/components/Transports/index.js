@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { fetchBus } from "../utils/fetchTransports";
+import { fetchBus } from "utils/fetchTransports";
 
 class Transports extends Component {
   constructor(props) {
