@@ -42,6 +42,12 @@ module.exports = {
           },
           {
             loader: "sass-loader" // compiles Sass to CSS
+          },
+          {
+            loader: "sass-resources-loader", // compiles Sass to CSS
+            options: {
+              resources: path.resolve(__dirname, './src/assets/css/index.scss')
+            }
           }
         ]
       },
@@ -55,10 +61,10 @@ module.exports = {
         ]
       },
       {
-        test: /\.(png|jpe?g|gif|svg|ttf|woff)$/i,
+        test: /\.(png|jpe?g|gif|svg|ttf|otf|woff)$/,
         use: [
           {
-            loader: 'url-loader',
+            loader: "url-loader",
             options: {
               limit: 8192
             }

@@ -1,0 +1,60 @@
+.group {
+  width: 240px;
+
+  :global {
+    .weather-details-list__title {
+      font-family: $font;
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 22px;
+    }
+
+    .weather-details-list__list {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+      flex: 1;
+
+      .weather-details {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 75px;
+        width: 80px;
+        border-radius: 8px;
+        background-color:rgba(0, 0, 0, 0.2);
+        padding: 15px;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+
+        &__icon {
+          display: flex;
+          justify-self: flex-start;
+          margin-bottom: 8px;
+        }
+  
+        &__legend {
+          color: $grey;
+          display: flex;
+          justify-self: flex-start;
+          font-size: 13px;
+          margin-top: 5px;
+        }
+  
+        &__value {
+          font-family: $font-secondary;
+          display: flex;
+          font-size: 22px;
+          line-height: 21px;
+          font-weight: 300;
+          text-align: center;
+          margin: auto;
+        }
+      }
+  
+      .weather-details:nth-child(3n + 2) {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
