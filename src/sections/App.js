@@ -18,7 +18,7 @@ class App extends Component {
             <Vocal />
             <Weather isCurrWeatherShowed isNextWeatherShowed />
           </main>
-          <Clock />
+          <Clock date />
       </div>
     );
   }
