@@ -46,7 +46,7 @@ class Weather extends Component {
   }
 
   /**
-   * 
+   * Return Title such as "14°C, It's sunny ☀"
    */
   getTitle(obj) {
     if (obj && obj.main && obj.main.temp && obj.weather && obj.weather.length > 0) {
