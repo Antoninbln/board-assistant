@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 
+import { fetchWeather, kelvinToCelsius, getWeatherEditorial } from "utils/weather";
+
 import WeatherDetailsList from "./WeatherDetailsList"
-import { fetchWeather, kelvinToCelsius, windDirection, getWeatherEditorial } from "utils/weather";
-import wordFilter from "utils/wordFilter";
-import { metersSecondToKilometersHour } from "utils/unitConverter";
+import NextWeathersList from "./NextWeathersList";
 import styles from "./index.module.scss";
+
 
 // @TODO : => Antonin (doc : https://openweathermap.org/forecast5)
 // - Ajouter les bons formatq de date
@@ -20,8 +21,8 @@ class Weather extends Component {
 
     this.state = {
       data: null,
-      isNextWeatherShowed: false,
       isCurrWeatherShowed: true,
+      isNextWeatherShowed: true,
       lang: this.props.lang || "fr"
     }
 
@@ -80,20 +81,7 @@ class Weather extends Component {
           </React.Fragment>
         )}
         {data.weather_week && isNextWeatherShowed && (
-          <div className="weather__week">
-            <h3>Next</h3>
-            {data.weather_week.map(
-              (item, index) => (
-                <div key={`day-${index}`}>
-                  <h4 className="list--date">{item.dt_txt}</h4>  
-                  <p className="list--temperature">T° <span className="value">{kelvinToCelsius(item.main.temp)}°C</span></p>  
-                  <p className="list--humidity">Humidité <span className="value">{item.main.humidity}%</span></p>  
-                  <p className="list--sky"><span className="value">{wordFilter(item.weather[0].main)}</span></p> {/* Ajouter une gestion de la liste*/}  
-                  <p className="list--wind">Vent <span className="value">{metersSecondToKilometersHour(item.wind.speed)}km/h, {windDirection(item.wind.deg)}</span></p> {/* Détecter l'orientation cardinale */}  
-                </div>
-              )
-            )}
-          </div>
+          <NextWeathersList reports={data.weather_week} />
         )}
       </div>
     );
