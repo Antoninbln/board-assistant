@@ -26,3 +26,12 @@ export function getCurrentDay(details = false) {
   if (details) return moment().format("D MMM YYYY");
   return moment().format("D");
 };
+
+/**
+ * 
+ * @param {*} ms 
+ */
+export function getHours(ms) {
+  if (!ms) return false;
+  return moment().format("HH:mm");
+}
