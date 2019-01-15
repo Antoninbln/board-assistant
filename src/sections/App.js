@@ -16,7 +16,7 @@ class App extends Component {
           </header>
           <main className="app-main">
             <Vocal />
-            <Weather />
+            <Weather isCurrWeatherShowed isNextWeatherShowed />
           </main>
           <Clock />
       </div>

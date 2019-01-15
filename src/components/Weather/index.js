@@ -22,8 +22,8 @@ class Weather extends Component {
 
     this.state = {
       data: null,
-      isCurrWeatherShowed: true,
-      isNextWeatherShowed: true,
+      isCurrWeatherShowed: this.props.isCurrWeatherShowed,
+      isNextWeatherShowed: this.props.isNextWeatherShowed,
       lang: this.props.lang || "fr"
     }
 
@@ -74,12 +74,12 @@ class Weather extends Component {
         {data.weather_day && (
           <React.Fragment>
             {this.getTitle(data.weather_day)}
-            {data.weather_day.weather && data.weather_day.weather.length > 0 && isCurrWeatherShowed && (
+            {isCurrWeatherShowed && data.weather_day.weather && data.weather_day.weather.length > 0 && (
               <WeatherDetailsList weather={data.weather_day} />
             )}
           </React.Fragment>
         )}
-        {data.weather_week && isNextWeatherShowed && (
+        {isNextWeatherShowed && data.weather_week && (
           <NextWeathersList reports={data.weather_week} />
         )}
       </div>
