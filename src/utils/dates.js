@@ -33,5 +33,5 @@ export function getCurrentDay(details = false) {
  */
 export function getHours(ms) {
   if (!ms) return false;
-  return moment().format("HH:mm");
+  return moment.unix(ms).format("H:mm");
 }

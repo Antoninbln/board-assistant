@@ -4,6 +4,7 @@ import { fetchWeather, kelvinToCelsius, getWeatherEditorial } from "utils/weathe
 
 import WeatherDetailsList from "./WeatherDetailsList"
 import NextWeathersList from "./NextWeathersList";
+import NextWeathersListItem from "./NextWeathersList/NextWeathersListItem";
 import styles from "./index.module.scss";
 
 
@@ -48,16 +49,15 @@ class Weather extends Component {
    * 
    */
   getTitle(obj) {
-    console.log("OBJ", obj, getWeatherEditorial(obj.weather[0]));
     if (obj && obj.main && obj.main.temp && obj.weather && obj.weather.length > 0) {
       return (
         <h2>
           <span className="title-big">{kelvinToCelsius(obj.main.temp)}</span>
           <span className="title-small">°C</span>
-          <span className="subtitle">, It's sunny.</span>
-          {obj.weather[0] && getWeatherEditorial(obj.weather[0]) &&
-            <span className="subtitle">It's {getWeatherEditorial(obj.weather[0]).adj}</span>
+          {getWeatherEditorial(obj.weather[0]) &&
+            <span className="subtitle">, It's {getWeatherEditorial(obj.weather[0]).adj}</span>
           }
+          <NextWeathersListItem data={obj} icon />
         </h2>
       );
     }
@@ -66,7 +66,6 @@ class Weather extends Component {
 
   render() {
     const { data, isNextWeatherShowed, isCurrWeatherShowed } = this.state;
-    console.log("Data", data);
 
     if (!data) return <div className={`c-weather ${styles.weather}`} style={{ color: "#fff" }}>La météo est en chargement...</div>;
 

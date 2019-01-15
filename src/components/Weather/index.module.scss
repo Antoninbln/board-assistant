@@ -15,6 +15,7 @@
       font-size: 28px;
       letter-spacing: 3px;
       font-weight: 700;
+      position: relative;
 
       .title-big {
         font-size: 80px;
@@ -24,13 +25,28 @@
       .title-small {
         font-size: 40px;
       }
-    }
 
-    .subtitle {
-      font-family: $font-secondary;
-      font-size: 25px;
-      font-weight: 300;
-      letter-spacing: 0;
+      .subtitle {
+        font-family: $font-secondary;
+        font-size: 25px;
+        font-weight: 300;
+        letter-spacing: 0;
+      }
+  
+      .next-weather {
+        position: absolute;
+        margin: 0;
+        padding: 0;
+        top: 10px;
+        right: -34px;
+        height: unset;
+
+        &__icon {
+          width: 54px;
+          height: auto;
+          opacity: 0.7;
+        }
+      }
     }
   }
 }

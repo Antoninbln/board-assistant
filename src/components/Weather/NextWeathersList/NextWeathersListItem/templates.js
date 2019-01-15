@@ -17,9 +17,9 @@ export const getTemplate = weather => {
   const template = icons.filter(item => item.id == weather.weather[0].id)[0]; // We take the first 1 because it can returns more, and find() returns a reference
 
   // If we have more than 1 icon && icon send by API exists
-  if (template.length > 0 && template[0].icon && template[0].icon.length > 1) {
+  if (template && template.icon && template.icon.length > 1) {
     if (weather.weather[0].icon && template.icon.length > 1)
-      template.icon = weather.weather[0].icon.indexOf("n") < 0 ? template.icon[0] : template.icon[1]; // Use icon from API
+      template.icon = weather.weather[0].icon.indexOf("n") === -1 ? [template.icon[0]] : [template.icon[1]]; // Use icon from API
   }
 
   return template;
