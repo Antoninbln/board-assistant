@@ -11,7 +11,7 @@ export default function getCurrentDate() {
   return {
     "date": moment().format("D MMM YYYY HH:mm:ss"),
     "day": moment().format("D MMMM YYYY"),
-    "hours": moment().format("HH"),
+    "hours": moment().format("H"),
     "minutes": moment().format("mm"),
     "seconds": moment().format("ss")
   };
@@ -32,7 +32,7 @@ export function getCurrentDay(details = false) {
  * @param { Integer } ms Date as milliseconds
  * @returns { String } Date such as 8:30
  */
-export function getHours(ms) {
+export function getHours(ms, sep = ":") {
   if (!ms) return false;
-  return moment.unix(ms).format("H:mm");
+  return moment.unix(ms).format(`H${sep}mm`);
 }
