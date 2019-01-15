@@ -5,7 +5,7 @@ moment.locale("fr", localization);
 
 /**
  * Return current date object
- * @returns { Object<date: String, day: String, hours: String, minutes: String, seconds: String>}
+ * @returns { Object<date: String, day: String, hours: String, minutes: String, seconds: String> }
  */
 export default function getCurrentDate() {
   return {
@@ -28,8 +28,9 @@ export function getCurrentDay(details = false) {
 };
 
 /**
- * 
- * @param {*} ms 
+ * Return hours of a date from milliseconds
+ * @param { Integer } ms Date as milliseconds
+ * @returns { String } Date such as 8:30
  */
 export function getHours(ms) {
   if (!ms) return false;
