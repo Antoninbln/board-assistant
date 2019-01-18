@@ -23,7 +23,7 @@
     "build": "webpack --mode production",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "sgc": "sgc"
+    "sgc": "gitmoji -c"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
