@@ -1,4 +1,4 @@
-close #
+Close #
 
 ### What's new ?
 

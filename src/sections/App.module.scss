@@ -1,27 +1,9 @@
 .app {
-  display: flex;
+  // color: white;
   padding: 0;
   margin: 0;
-  font-family: $font, $font-secondary, sans-serif;
-  font-weight: 300;
 
-  &-header {}
-
-  &-main {
-    display: flex;
-    width: 100%;
-  }
-
-  :global {
-    .app-header {}
-
-    .app-main {
-      display: flex;
-      width: 100%;
-    }
-    
-    .txt__white {
-      color: $white;
-    }
+  &-header {
+    // background: black;
   }
 }

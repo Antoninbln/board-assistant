@@ -10,16 +10,13 @@ import styles from "./App.module.scss";
 class App extends Component {
 
   render() {
+    console.log(styles, styles.app);
     return (
-      <div className={`app ${styles.app}`}>
-        <header className="app-header">
-          
-          </header>
-          <main className="app-main">
-            <Vocal />
-            <Weather isCurrWeatherShowed isNextWeatherShowed />
-          </main>
-          <Clock date />
+      <div className={`App ${styles.app}`}>
+        <header className="App-header">
+          <h1 className="App-title">Interface titre</h1>
+          <Clock />
+        </header>
       </div>
     );
   }
