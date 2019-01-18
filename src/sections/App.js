@@ -8,6 +8,7 @@ import Vocal from "components/Vocal";
 import styles from "./App.module.scss";
 
 class App extends Component {
+
   render() {
     return (
       <div className={`app ${styles.app}`}>
