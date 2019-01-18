@@ -1,7 +1,41 @@
 .clock {
-  color: #fff;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 75px;
+  left: 100px;
+  color: $white;
 
   :global {
-    color: red;
+    .c-clock__day {
+      font-family: $font-secondary;
+      font-weight: 300;
+      font-size: 22px;
+      letter-spacing: 1px;
+      text-align: left;
+      margin-bottom: 18px;
+      opacity: 0.9;
+    }
+
+    .c-clock__time {
+      font-family: $font;
+      font-size: 55px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      line-height: 100%;
+
+      &__seconds {
+        opacity: 0.3;
+        font-size: 32px;
+        margin-left: 16px;
+      }
+
+      .separator {
+        display: inline-flex;
+        font-family: $font-secondary;
+        font-weight: 300;
+        margin: 0 16px;
+      }
+    }
   }
 }

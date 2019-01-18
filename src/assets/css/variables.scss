@@ -1,0 +1,46 @@
+// :global {
+  // Colors
+  $white: #fff;
+  $dark: #121316;
+  $black: #000;
+  $light: #e0e0e0;
+  $grey: #646464;
+
+  @font-face {
+    font-family: "Circular";
+    src: url("assets/fonts/circular.otf") format("opentype");
+  }
+
+  @font-face {
+    font-family: "Circular Black";
+    src: url("assets/fonts/circular.otf") format("opentype");
+  }
+
+  @font-face {
+    font-family: "Circular Book";
+    src: url("assets/fonts/CircularStd-book.otf") format("opentype");
+  }
+
+  // Fonts
+  $font: "Circular";
+  $font-secondary: "Circular Book";
+  $font-ternary: "Circular Black";
+
+  // Styles
+  :global {
+    .sk {
+      &-light {
+        background: $light;
+        color: $light;
+      }
+    }
+
+    .sk-text-short {
+      border-radius: 2px;
+      line-height: calc(100% + 4px);
+      min-width: 140px;
+      display: inline-block;
+      transform: width 0.2s, background 0.2s, color 0.2s;
+    }
+  }
+// }
