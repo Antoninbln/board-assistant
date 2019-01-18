@@ -18,7 +18,7 @@ App can be displayed on a browser with a Reaspberry Pi.
 
 ## Installation
 
-#### 1. How to use
+#### 1. How to launch
 
 
 ##### 1.1 Add config file
@@ -47,7 +47,7 @@ Then you are redirected to the App screen.
 
 
 #### 2. How to use
-Special mention for Spotify users, you'll be able to use some vocal commands, here is the list : 
+Special mention for Spotify users ; yYou'll be able to use some vocal commands, here is the list : 
 - `album`: play an album
 - `joue`: play a song (with this you can ask **song title**, **singer name** & **album name** all combined in command)
 - `pause`: pause current track
@@ -72,7 +72,12 @@ For the moment commands doesn't work on every language. By default Speech Recogn
   Be sure to :
     - Name the PR the good way
     - Call issue in decription like : "Close #120"
-    - Respect the PR templat
+    - Respect the PR template
+
+
+### Commits
+To commits our work, we use a package named [semantic-git-commit-cli](https://www.npmjs.com/package/semantic-git-commit-cli).<br/>
+So you can use `yarn run sgc` to create a commit formalized.
 
 
 ### Issues
