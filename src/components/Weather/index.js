@@ -1,33 +1,44 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 import { fetchWeather, kelvinToCelsius, getWeatherEditorial } from "utils/weather";
 
-import WeatherDetailsList from "./WeatherDetailsList"
+import WeatherDetailsList from "./WeatherDetailsList";
 import NextWeathersList from "./NextWeathersList";
 import NextWeathersListItem from "./NextWeathersList/NextWeathersListItem";
 import styles from "./index.module.scss";
 
-
-// @TODO : => Antonin (doc : https://openweathermap.org/forecast5)
-// - Ajouter les bons formatq de date
-// - Ajouter des icones en fonction des ciels
-// - Ajouter les cas où on a  un list.rain
-// - Ajouter les cas où on a  un list.snow
-// - N'afficher que les 3 premiers
-// - Styliser le tout
+/**
+* Return Title such as "14°C, It's sunny ☀"
+*/
+const getTitle = obj => {
+  if (obj && obj.main && obj.main.temp && obj.weather && obj.weather.length > 0) {
+    return (
+      <h2>
+        <span className="title-big">{kelvinToCelsius(obj.main.temp)}</span>
+        <span className="title-small">°C</span>
+        {getWeatherEditorial(obj.weather[0]) &&
+          <span className="subtitle">{", It's "}{getWeatherEditorial(obj.weather[0]).adj}</span>
+        }
+        <NextWeathersListItem data={obj} icon />
+      </h2>
+    );
+  }
+  return false;
+};
 
 class Weather extends Component {
   constructor(props) {
     super(props);
 
+    const { isCurrWeatherShowed, isNextWeatherShowed, lang } = this.props;
+
     this.state = {
       data: null,
-      isCurrWeatherShowed: this.props.isCurrWeatherShowed,
-      isNextWeatherShowed: this.props.isNextWeatherShowed,
-      lang: this.props.lang || "fr"
-    }
-
-    this.getTitle = this.getTitle.bind(this);
+      isCurrWeatherShowed,
+      isNextWeatherShowed,
+      lang: lang || "fr"
+    };
   }
 
   componentDidMount() {
@@ -45,25 +56,6 @@ class Weather extends Component {
       );
   }
 
-  /**
-   * Return Title such as "14°C, It's sunny ☀"
-   */
-  getTitle(obj) {
-    if (obj && obj.main && obj.main.temp && obj.weather && obj.weather.length > 0) {
-      return (
-        <h2>
-          <span className="title-big">{kelvinToCelsius(obj.main.temp)}</span>
-          <span className="title-small">°C</span>
-          {getWeatherEditorial(obj.weather[0]) &&
-            <span className="subtitle">, It's {getWeatherEditorial(obj.weather[0]).adj}</span>
-          }
-          <NextWeathersListItem data={obj} icon />
-        </h2>
-      );
-    }
-    else return false;
-  }
-
   render() {
     const { data, isNextWeatherShowed, isCurrWeatherShowed } = this.state;
 
@@ -73,7 +65,7 @@ class Weather extends Component {
       <div className={`c-weather ${styles.weather}`}>
         {data.weather_day && (
           <React.Fragment>
-            {this.getTitle(data.weather_day)}
+            {getTitle(data.weather_day)}
             {isCurrWeatherShowed && data.weather_day.weather && data.weather_day.weather.length > 0 && (
               <WeatherDetailsList weather={data.weather_day} />
             )}
@@ -86,5 +78,17 @@ class Weather extends Component {
     );
   }
 }
+
+Weather.propTypes = {
+  isCurrWeatherShowed: PropTypes.bool,
+  isNextWeatherShowed: PropTypes.bool,
+  lang: PropTypes.string
+};
+
+Weather.defaultProps = {
+  isCurrWeatherShowed: false,
+  isNextWeatherShowed: false,
+  lang: "fr"
+};
 
 export default Weather;

@@ -5,16 +5,10 @@ const apiKey = "&APPID=e3ec2876f020b69df62826855fe1bf38";
  * 
  * @param {*} lang 
  */
-export const fetchWeather = (lang) => {
-  return fetch(`${baseUrl}/forecast?q=Montreuil,fr${apiKey}&lang=${lang}`)
-    .then(res => {
-      return res.json();
-    })
-    .then(data => {
-      return data;
-    })
-    .catch(err => console.log("Error", err));
-};
+export const fetchWeather = (lang) => fetch(`${baseUrl}/forecast?q=Montreuil,fr${apiKey}&lang=${lang}`)
+  .then(res => res.json())
+  .then(data => data)
+  .catch(err => console.log("Error", err));
 
 /**
  * 
@@ -49,10 +43,10 @@ export const convertTemp = val => (val - 32) / 1.8;
 
 export const getWeatherEditorial = weather => {
   switch(weather.main) {
-    case "Clouds":
-      return { icon: "", adj: "cloudy", decription: `${weather.description.charAt(0).toUpperCase()}` };
+  case "Clouds":
+    return { icon: "", adj: "cloudy", decription: `${weather.description.charAt(0).toUpperCase()}` };
     
-    default:
-      return false;
+  default:
+    return false;
   }
-}
+};

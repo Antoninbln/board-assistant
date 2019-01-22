@@ -7,11 +7,11 @@ import moment from "moment";
  * @return { Void }
  */
 export const searchSong = (query, accessToken) => {
-  let result = fetch(`https://api.spotify.com/v1/search?q=${encodeURI(query)}&type=track`, {
-    method: 'GET',
+  const result = fetch(`https://api.spotify.com/v1/search?q=${encodeURI(query)}&type=track`, {
+    method: "GET",
     headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${accessToken}`,
     }})
     .then(res => res.json())
     .then(body => body.tracks.items.map(item => item.uri));
@@ -36,11 +36,11 @@ export const playSong = ({
 }) => {
   getOAuthToken(() => {
     fetch(`https://api.spotify.com/v1/me/player/play?device_id=${id}`, {
-      method: 'PUT',
+      method: "PUT",
       body: JSON.stringify({ uris: spotify_uri }),
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${accessToken}`,
       },
     });
   });
@@ -53,11 +53,11 @@ export const playSong = ({
  * @return { Void }
  */
 export const searchAlbum = (query, accessToken) => {
-  let result = fetch(`https://api.spotify.com/v1/search?q=${encodeURI(query)}&type=album`, {
-    method: 'GET',
+  const result = fetch(`https://api.spotify.com/v1/search?q=${encodeURI(query)}&type=album`, {
+    method: "GET",
     headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${accessToken}`,
     }})
     .then(res => res.json())
     .then(body => body.albums.items[0]);
@@ -65,16 +65,17 @@ export const searchAlbum = (query, accessToken) => {
 };
 
 /**
- * 
+ * Get params from hash
+ * @returns { Array } params
  */
 export const getHashParams = () => {
-  let hashParams = {};
+  const hashParams = {};
   let regE = /([^&;=]+)=?([^&;]*)/g;
   const regR = /([^&;=]+)=?([^&;]*)/g;
 
   const q = window.location.hash.substring(1);
 
-  regE = regR.exec(q)
+  regE = regR.exec(q);
 
   while (regE) {
     hashParams[regE[1]] = decodeURIComponent(regE[2]);
@@ -122,8 +123,9 @@ export const getCover = track => {
  * @param { String } refreshToken 
  */
 export const getNewAccessToken = refreshToken => {
-  let result = fetch(`http://localhost:8888/refresh_token?refresh_token=${refreshToken}`, {
-    method: 'GET'
+  console.log(refreshToken);
+  const result = fetch(`http://localhost:8888/refresh_token?refresh_token=${refreshToken}`, {
+    method: "GET"
   })
     .then(res => res.json())
     .then(body => body.access_token)

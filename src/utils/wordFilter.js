@@ -8,19 +8,19 @@ export default (word, lang = "fr") => {
   }
 
   switch (word) {
-    case "Clouds":
-      return "Nuageux";
+  case "Clouds":
+    return "Nuageux";
 
-    case "Clear":
-      return "Dégagé";
+  case "Clear":
+    return "Dégagé";
     
-    case "Rain":
-      return "Pluie";
+  case "Rain":
+    return "Pluie";
     
-    case "Extreme":
-      return "Tempète";
+  case "Extreme":
+    return "Tempète";
     
-    default: 
-      return word;
+  default: 
+    return word;
   }
 };

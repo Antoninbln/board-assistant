@@ -1,0 +1,12 @@
+./node_modules
+.env
+
+node_modules
+yarn-error.log
+.DS_Store
+
+# Settings
+.vscode
+
+# App Spotify
+./server/authorization_code/app.js
