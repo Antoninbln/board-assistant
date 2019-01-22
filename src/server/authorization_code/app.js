@@ -38,7 +38,6 @@ app.use(express.static(path.join(__dirname, "/public")))
 
 app.get("/login", (req, res) => {
   const state = generateRandomString(16);
-  console.log("STATE RANDOM STR", generateRandomString(16));
 
   res.cookie(stateKey, state);
 

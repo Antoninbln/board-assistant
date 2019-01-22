@@ -228,7 +228,7 @@ class Vocal extends Component {
                 {getTrackName(currentTrack)} - {
                   getArtists(currentTrack).length > 1
                     ? getArtists(currentTrack).map((artist, index) => (
-                      <span key={`artist-${artist}`}>{!index === 0 && " & "}{artist}</span>
+                      <span key={`artist-${artist}`}>{index !== 0 && " & "}{artist}</span>
                     ))
                     : <span>{getArtists(currentTrack)[0]}</span>}
                 <p>{getDuration(currentTrack)}</p>

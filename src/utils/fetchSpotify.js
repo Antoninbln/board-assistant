@@ -123,7 +123,6 @@ export const getCover = track => {
  * @param { String } refreshToken 
  */
 export const getNewAccessToken = refreshToken => {
-  console.log(refreshToken);
   const result = fetch(`http://localhost:8888/refresh_token?refresh_token=${refreshToken}`, {
     method: "GET"
   })

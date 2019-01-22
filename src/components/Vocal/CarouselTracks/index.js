@@ -32,21 +32,21 @@ class CarouselTracks extends Component {
     const linear = { background: `linear-gradient(45deg, ${color1}, ${color2})` };
 
     return (
-      <div>
-        <div className='spotify__carousel'>
+      <div className={styles.group}>
+        <div className="spotify__carousel">
           <div className="spotify__carousel__beside-container">
             {previousTrack
               ? (
                 <img className="spotify__carousel__beside-container__track" src={getCover(previousTrack)} alt="Cover previous track" />
               ) : (
-                <div className="spotify__carousel__beside-container__track no-cover" />
+                <div className="spotify__carousel__beside-container__track no-cover" style={linear} />
               )
             }
             {nextTrack
               ? (
                 <img className="spotify__carousel__beside-container__track" src={getCover(nextTrack)} alt="Cover next track" />
               ) : (
-                <div className="spotify__carousel__beside-container__track no-cover" />
+                <div className="spotify__carousel__beside-container__track no-cover" style={linear} />
               )
             }
           </div>
