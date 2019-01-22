@@ -12,12 +12,18 @@
         "ecmaVersion": 2018,
         "sourceType": "module"
     },
+    "ecmaFeatures": { "jsx": true },
     "plugins": [
         "react",
         "jsx-a11y",
         "prettier"
     ],
     "rules": {
+        "no-return-assign": 0,
+        "react/no-array-index-key": 0,
+        "no-unused-expressions": 0,
+        "import/no-unresolved": 0,
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
         "indent": [
             "error",
             2
