@@ -11,9 +11,6 @@ class Vocal extends Component {
     super(props);
 
     this.state = {
-      currentTrack: null,
-      nextTrack: null,
-      previousTrack: null,
       command: "",
       accessToken: null,
       refreshToken: null,
@@ -90,7 +87,6 @@ class Vocal extends Component {
         },
         "*anything": anything => this.setState({ command: anything })
       };
-
       annyang.addCommands(commands);
       annyang.setLanguage("fr-FR");
       annyang.start();
