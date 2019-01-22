@@ -5,13 +5,14 @@ import { fetchBus } from "utils/fetchTransports";
 class Transports extends Component {
   constructor(props) {
     super(props);
+    const { line } = this.props;
 
     this.state = {
-      line: this.props.line || 122,
+      line: line || 122,
       bus: {
         principale: []
       }
-    }
+    };
   }
 
   async componentDidMount() {
@@ -34,7 +35,7 @@ class Transports extends Component {
     if (!bus.length > 0) return <div>Loading</div>;
 
     return (
-      <div className={`c-transports-details`}>
+      <div className="c-transports-details">
         <span>Transports</span>
       </div>
     );

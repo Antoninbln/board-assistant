@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import getCurrentDate, { getHours } from "utils/dates";
+import getCurrentDate from "utils/dates";
 import styles from "./index.module.scss";
 
 class Clock extends Component {
@@ -12,7 +12,7 @@ class Clock extends Component {
   componentDidMount() {
     this.interval = setInterval(
       () => {
-        this.setState({ clock: getCurrentDate() })
+        this.setState({ clock: getCurrentDate() });
       }, 1000);
   }
 
