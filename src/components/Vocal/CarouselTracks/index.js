@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+
 import { getCover } from "utils/fetchSpotify";
 
 import styles from "./index.module.scss";
@@ -67,5 +69,18 @@ class CarouselTracks extends Component {
     );
   }
 }
+
+
+CarouselTracks.propTypes = {
+  cover: PropTypes.string,
+  previousTrack: PropTypes.shape({}),
+  nextTrack: PropTypes.shape({})
+};
+
+CarouselTracks.defaultProps = {
+  cover: null,
+  previousTrack: null,
+  nextTrack: null
+};
 
 export default CarouselTracks;

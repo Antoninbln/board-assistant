@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import { getUniqueId } from "utils";
 import NextWeathersListItem from "./NextWeathersListItem";
@@ -24,6 +25,14 @@ const NextWeathersList = ({ reports }) => {
       </div>
     </div>
   );
+};
+
+NextWeathersList.propTypes = {
+  reports: PropTypes.arrayOf(PropTypes.shape({}))
+};
+
+NextWeathersList.defaultProps = {
+  reports: []
 };
 
 export default NextWeathersList;

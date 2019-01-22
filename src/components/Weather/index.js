@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 import { fetchWeather, kelvinToCelsius, getWeatherEditorial } from "utils/weather";
 
@@ -29,6 +30,7 @@ const getTitle = obj => {
 class Weather extends Component {
   constructor(props) {
     super(props);
+
     const { isCurrWeatherShowed, isNextWeatherShowed, lang } = this.props;
 
     this.state = {
@@ -76,5 +78,17 @@ class Weather extends Component {
     );
   }
 }
+
+Weather.propTypes = {
+  isCurrWeatherShowed: PropTypes.bool,
+  isNextWeatherShowed: PropTypes.bool,
+  lang: PropTypes.string
+};
+
+Weather.defaultProps = {
+  isCurrWeatherShowed: false,
+  isNextWeatherShowed: false,
+  lang: "fr"
+};
 
 export default Weather;

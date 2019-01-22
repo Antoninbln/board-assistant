@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 import getCurrentDate from "utils/dates";
 import styles from "./index.module.scss";
@@ -33,5 +34,13 @@ class Clock extends Component {
     );
   }
 }
+
+Clock.propTypes = {
+  date: PropTypes.bool
+};
+
+Clock.defaultProps = {
+  date: true
+};
 
 export default Clock;

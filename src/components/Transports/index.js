@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 import { fetchBus } from "utils/fetchTransports";
 
@@ -8,7 +9,7 @@ class Transports extends Component {
     const { line } = this.props;
 
     this.state = {
-      line: line || 122,
+      line,
       bus: {
         principale: []
       }
@@ -41,5 +42,13 @@ class Transports extends Component {
     );
   }
 }
+
+Transports.propTypes = {
+  line: PropTypes.number
+};
+
+Transports.defaultProps = {
+  line: 122
+};
 
 export default Transports;

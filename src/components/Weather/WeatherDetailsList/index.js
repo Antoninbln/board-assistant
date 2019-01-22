@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import { getUniqueId } from "utils";
 import getTemplate from "./templates";
@@ -22,5 +23,13 @@ const WeatherDetailsList = ({ weather }) => (
     </div>
   </div>
 );
+
+WeatherDetailsList.propTypes = {
+  weather: PropTypes.shape({})
+};
+
+WeatherDetailsList.defaultProps = {
+  weather: {}
+};
 
 export default WeatherDetailsList;

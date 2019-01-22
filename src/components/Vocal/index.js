@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+
 import annyang from "annyang";
 import { playSong, searchSong, searchAlbum, getArtists, getCover, getTrackName, getDuration, getHashParams, getNewAccessToken } from "utils/fetchSpotify";
 
@@ -248,5 +249,8 @@ class Vocal extends Component {
     );
   }
 }
+
+Vocal.propTypes = {};
+Vocal.defaultProps = {};
 
 export default Vocal;

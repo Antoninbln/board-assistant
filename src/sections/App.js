@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 
 import Clock from "components/Clock";
 import Weather from "components/Weather";
-import Transports from "components/Transports";
+// import Transports from "components/Transports";
 import Vocal from "components/Vocal";
 
 import styles from "./App.module.scss";
