@@ -1,4 +1,3 @@
-import React from "react";
 import { getArtists, getCover, getTrackName } from "utils/fetchSpotify";
 
 import styles from "./index.module.scss";
