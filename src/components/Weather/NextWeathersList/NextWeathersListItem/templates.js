@@ -14,7 +14,8 @@ import stormIcon from "./assets/icon-storm.svg";
 export const getTemplate = weather => {
   if (!(weather.weather && weather.weather[0] && weather.weather[0].id)) return false;
 
-  const template = icons.filter(item => item.id == weather.weather[0].id)[0]; // We take the first 1 because it can returns more, and find() returns a reference
+  // eslint-disable-next-line no-use-before-define
+  const template = icons.filter(item => item.id === weather.weather[0].id)[0]; // We take the first 1 because it can returns more, and find() returns a reference
 
   // If we have more than 1 icon && icon send by API exists
   if (template && template.icon && template.icon.length > 1) {
@@ -25,6 +26,7 @@ export const getTemplate = weather => {
   return template;
 };
 
+export default { getTemplate };
 const icons = [
   {
     id: 200,

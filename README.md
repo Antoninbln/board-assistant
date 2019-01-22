@@ -89,3 +89,5 @@ If you think about a new feature, or a bug to fix, please leave an issue and fol
 #### About the vocal recognition
 We use [Annyang API](), based on native browser SpeechRecognition API (only available on Chrome and Firefox).
 Thee Doc, it's that it recognizes Noun propers, so we can easily use it to generate requests with artists, albums, tracks names...
+
+For the next step, vocal recognition should be done on server side, so we'll no longer use Annyag API.

@@ -7,3 +7,6 @@ yarn-error.log
 
 # Settings
 .vscode
+
+# App Spotify
+./server/authorization_code/app.js

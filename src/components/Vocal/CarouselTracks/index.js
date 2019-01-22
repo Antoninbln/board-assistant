@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+
 import { getCover } from "utils/fetchSpotify";
 
 import styles from "./index.module.scss";
@@ -26,8 +28,8 @@ class CarouselTracks extends Component {
 
   render() {
     const { cover, previousTrack, nextTrack } = this.props;
-    const { color1, color2 } = this.state.randomGradient;
-    const linear = { background: `${color1}`, background: `linear-gradient(45deg, ${color1}, ${color2})` };
+    const { color1, color2 } = this.state.randomGradient; // eslint-disable-line react/destructuring-assignment
+    const linear = { background: `linear-gradient(45deg, ${color1}, ${color2})` };
 
     return (
       <div className={styles.group}>
@@ -67,5 +69,18 @@ class CarouselTracks extends Component {
     );
   }
 }
+
+
+CarouselTracks.propTypes = {
+  cover: PropTypes.string,
+  previousTrack: PropTypes.shape({}),
+  nextTrack: PropTypes.shape({})
+};
+
+CarouselTracks.defaultProps = {
+  cover: null,
+  previousTrack: null,
+  nextTrack: null
+};
 
 export default CarouselTracks;
