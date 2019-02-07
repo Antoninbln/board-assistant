@@ -6,32 +6,28 @@ import { fetchBus } from "utils/fetchTransports";
 class Transports extends Component {
   constructor(props) {
     super(props);
-    const { line } = this.props;
+    // const { lines } = this.props;
 
     this.state = {
-      line,
-      bus: {
-        principale: []
-      }
+      bus: []
     };
   }
 
-  async componentDidMount() {
-    const { line } = this.state;
-    // const second = await fetchBus(301, "parc+de+montreau", "A");
-    const first = await fetchBus(line, "parc+de+montreau", "R");
+  componentDidMount() {
+    const { bus } = this.state;
+    const test = [{ id: 122, station: "parc+de+montreau", direction: "R"}];
 
-    this.setState({
-      bus: {
-        principale: first,
-      }
+    fetchBus(test).then(data => {
+      this.setState({
+        bus: data
+      });
     });
   }
 
   render() {
     const { bus } = this.state;
 
-    console.log(bus.principale[0].message);
+    console.log("bus principale", bus);
 
     if (!bus.length > 0) return <div>Loading</div>;
 
@@ -44,11 +40,11 @@ class Transports extends Component {
 }
 
 Transports.propTypes = {
-  line: PropTypes.number
+  //
 };
 
 Transports.defaultProps = {
-  line: 122
+  //
 };
 
 export default Transports;
