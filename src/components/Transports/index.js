@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-
 import { fetchBus } from "utils/fetchTransports";
+
+import ServiceItem from "./ServiceItem";
+import styles from "./index.module.scss";
 
 class Transports extends Component {
   constructor(props) {
@@ -15,9 +17,9 @@ class Transports extends Component {
 
   componentDidMount() {
     const { bus } = this.state;
-    const test = [{ id: 122, station: "parc+de+montreau", direction: "R"}];
+    const { lines } = this.props;
 
-    fetchBus(test).then(data => {
+    fetchBus(lines).then(data => {
       this.setState({
         bus: data
       });
@@ -27,24 +29,17 @@ class Transports extends Component {
   render() {
     const { bus } = this.state;
 
-    console.log("bus principale", bus);
-
     if (!bus.length > 0) return <div>Loading</div>;
-
     return (
-      <div className="c-transports-details">
-        <span>Transports</span>
+      <div className={`c-transports-details ${styles.group}`}>
+        {bus.map(service => <ServiceItem id={service.id} station={service.station} services={service.schedules} />)}
       </div>
     );
   }
 }
 
 Transports.propTypes = {
-  //
-};
-
-Transports.defaultProps = {
-  //
+  lines: PropTypes.arrayOf(PropTypes.shape({})).isRequired
 };
 
 export default Transports;
