@@ -28,15 +28,13 @@ class Transports extends Component {
 
   getBus(lines) {
     setInterval(
-      () => {
-        fetchBus(lines).then(
-          data => {
-            this.setState({
-              bus: data
-            });
-          }
-        );
-      },
+      () => fetchBus(lines).then(
+        data => {
+          this.setState({
+            bus: data
+          });
+        }
+      ),
       30000
     );
   };
