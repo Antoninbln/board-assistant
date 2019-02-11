@@ -8,7 +8,6 @@ import styles from "./index.module.scss";
 class Transports extends Component {
   constructor(props) {
     super(props);
-    // const { lines } = this.props;
 
     this.state = {
       bus: []
@@ -16,7 +15,6 @@ class Transports extends Component {
   }
 
   componentDidMount() {
-    const { bus } = this.state;
     const { lines } = this.props;
 
     fetchBus(lines).then(data => {
@@ -24,7 +22,24 @@ class Transports extends Component {
         bus: data
       });
     });
+
+    this.getBus(lines);
   }
+
+  getBus(lines) {
+    setInterval(
+      () => {
+        fetchBus(lines).then(
+          data => {
+            this.setState({
+              bus: data
+            });
+          }
+        );
+      },
+      30000
+    );
+  };
 
   render() {
     const { bus } = this.state;
