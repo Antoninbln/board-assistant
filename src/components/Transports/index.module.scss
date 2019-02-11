@@ -1,11 +1,27 @@
 .group {
   width: 350px;
   position: absolute;
-  left: 100px;
+  // left: 100px;
   top: 230px;
   color: $white;
 
   :global {
-
+    .transition-entering {
+      left: -360px;
+    }
+    
+    .transition-entered {
+      left: 100px;
+      transition: left 10000ms ease-in-out;
+    }
+    
+    .transition-exiting {
+      left: 100px;
+    }
+    
+    .transition-exited {
+      left: -360px;
+      transition: left 3000ms ease-in;
+    }
   }
 }

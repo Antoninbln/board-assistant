@@ -58,11 +58,15 @@ class Weather extends Component {
 
   render() {
     const { data, isNextWeatherShowed, isCurrWeatherShowed } = this.state;
+    const { style } = this.props;
 
     if (!data) return <div className={`c-weather ${styles.weather}`} style={{ color: "#fff" }}>La météo est en chargement...</div>;
 
     return (
-      <div className={`c-weather ${styles.weather}`}>
+      <div
+        className={`c-weather ${styles.weather}`}
+        style={style}
+      >
         {data.weather_day && (
           <React.Fragment>
             {getTitle(data.weather_day)}
@@ -82,13 +86,15 @@ class Weather extends Component {
 Weather.propTypes = {
   isCurrWeatherShowed: PropTypes.bool,
   isNextWeatherShowed: PropTypes.bool,
-  lang: PropTypes.string
+  lang: PropTypes.string,
+  style: PropTypes.shape()
 };
 
 Weather.defaultProps = {
   isCurrWeatherShowed: false,
   isNextWeatherShowed: false,
-  lang: "fr"
+  lang: "fr",
+  style: {}
 };
 
 export default Weather;

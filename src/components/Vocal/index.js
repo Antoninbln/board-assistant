@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 import annyang from "annyang";
 import { playSong, searchSong, searchAlbum, getArtists, getCover, getTrackName, getDuration, getHashParams, getNewAccessToken } from "utils/fetchSpotify";
@@ -26,6 +27,8 @@ class Vocal extends Component {
   }
 
   componentDidMount() {
+    const { openMeteo, openBus } = this.props;
+    
     this.audio = new Audio();
 
     // Retrieve params from URL
@@ -43,6 +46,22 @@ class Vocal extends Component {
       const commands = {
         "test": () => {
           this.setState({ command: "test" });
+        },
+        "(montre-moi) la météo": () => {
+          console.log("OUVRE météo");
+          openMeteo(true);
+        },
+        "ferme la météo": () => {
+          console.log("FERME météo");
+          openMeteo(false);
+        },
+        "(montre-moi les) horaires de bus": () => {
+          console.log("OUVRE bus");
+          openBus(true);
+        },
+        "ferme les horaires de bus": () => {
+          console.log("FERME bus");
+          openBus(false);
         },
         "album *album": album => {
           this.setState({ command: album });
@@ -246,7 +265,13 @@ class Vocal extends Component {
   }
 }
 
-Vocal.propTypes = {};
-Vocal.defaultProps = {};
+Vocal.propTypes = {
+  openBus: PropTypes.func,
+  openMeteo: PropTypes.func
+};
+Vocal.defaultProps = {
+  openBus: () => {},
+  openMeteo: () => {}
+};
 
 export default Vocal;

@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import { getUniqueId } from "utils";
+
 import styles from "./index.module.scss";
 
 const cleanString = str => str.split("+").join(" ");
@@ -24,8 +26,8 @@ const ServiceItem = ({ id, station, services }) => {
         <p className="line-services__id" style={{ backgroundColor: color, boxShadow: `0 1px 7px 1px ${color}` }}>{id}</p>
         <p className="line-services__services">
           {services.map((service, index) => (
-            <React.Fragment>
-              {index > 0 && (<span className="line-services__services__separator">|</span>)}
+            <React.Fragment key={getUniqueId()}>
+              {index > 0 && (<span key={getUniqueId()} className="line-services__services__separator">|</span>)}
               <span>{service.message}</span>
             </React.Fragment>
           ))}
