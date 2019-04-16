@@ -48,19 +48,15 @@ class Vocal extends Component {
           this.setState({ command: "test" });
         },
         "(montre-moi) la météo": () => {
-          console.log("OUVRE météo");
           openMeteo(true);
         },
         "ferme la météo": () => {
-          console.log("FERME météo");
           openMeteo(false);
         },
         "(montre-moi les) horaires de bus": () => {
-          console.log("OUVRE bus");
           openBus(true);
         },
         "ferme les horaires de bus": () => {
-          console.log("FERME bus");
           openBus(false);
         },
         "album *album": album => {
