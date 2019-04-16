@@ -9,7 +9,7 @@ The goal is to develop a simple tool which can daily help.
 **Today**, it's possible to show bus passages, weather and play Spotify music. All these actions thanks to SpeechRecognition.
 **On long term**, speech recognition should be managed from back side or specific micro service, each component should be a specific view, Board Assistant should integer new features / services. Also it should be deployed on hardware system like a Raspberry Pi. Maybe you have any further idea ?
 
-### Take a quick look on what's look like :
+### Take a quick look on it looks like :
 ![Interface de l'application](./documentation/img/interface_example.png)
 
 
