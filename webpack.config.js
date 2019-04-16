@@ -1,22 +1,22 @@
 const path = require("path");
-const webpack = require('webpack');
+const webpack = require("webpack");
 
 module.exports = {
   mode: "development",
-  entry: './src/index.js',
+  entry: "./src/index.js",
   plugins: [
     new webpack.HotModuleReplacementPlugin()
   ],
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    publicPath: '/',
-    filename: 'bundle.js'
+    path: path.resolve(__dirname, "dist"),
+    publicPath: "/",
+    filename: "bundle.js"
   },
   resolve: {
     alias: {
-      assets: path.resolve(__dirname, './src/assets/'),
-      utils: path.resolve(__dirname, './src/utils/'),
-      components: path.resolve(__dirname, './src/components/'),
+      assets: path.resolve(__dirname, "./src/assets/"),
+      utils: path.resolve(__dirname, "./src/utils/"),
+      components: path.resolve(__dirname, "./src/components/"),
     }
   },
   module: {
@@ -37,7 +37,7 @@ module.exports = {
             options: {
               importLoader: 1,
               modules: true,
-              localIdentName: '[local]___[hash:base64:5]'
+              localIdentName: "[local]___[hash:base64:5]"
             }
           },
           {
@@ -46,7 +46,7 @@ module.exports = {
           {
             loader: "sass-resources-loader", // compiles Sass to CSS
             options: {
-              resources: path.resolve(__dirname, './src/assets/css/index.scss')
+              resources: path.resolve(__dirname, "./src/assets/css/index.scss")
             }
           }
         ]
@@ -76,6 +76,6 @@ module.exports = {
   devServer: {
     port: 3000,
     hot: true,
-    contentBase: './dist'
+    contentBase: "./dist"
   }
 };
