@@ -10,7 +10,7 @@ The goal is to develop a simple tool which can daily help.
 **On long term**, speech recognition should be managed from back side or specific micro service, each component should be a specific view, Board Assistant should integer new features / services. Also it should be deployed on hardware system like a Raspberry Pi. Maybe you have any further idea ?
 
 ### Take a quick look on what's look like :
-![Interface de l'application](https://github.com/Antoninbln/board-assistant/tree/develop/documentation/img/interface_example.png)
+![Interface de l'application](./documentation/img/interface_example.png)
 
 
 ## Technologies
@@ -54,7 +54,7 @@ Then a new tab opens in your favourite browser. If you don't want to initialize 
 Create an application on Spotify [here](https://developer.spotify.com/dashboard/applications).
 Then fill `CLIENT_ID` and `CLIENT_SECRET` of `.env` file, you're now ready to launch.
 
-![Splash screen image]("https://github.com/Antoninbln/board-assistant/tree/develop/documentation/img/login-with-spotify.png")
+![Splash screen image](./documentation/img/login-with-spotify.png)
 Click *"Login in"* button.
 
 Then you are redirected to the App screen.
@@ -68,7 +68,7 @@ Special mention for Spotify users ; you'll be able to use some vocal commands, h
 - `suivant`: play next track
 - `précédent`: play previous track
 - `*`: Everything you say which doesn't trigger a command is displayed on screen, so you have a feedback on what is understood by the application.
-For more information, check the list of available commands [here](https://github.com/Antoninbln/board-assistant/tree/develop/documentation/commands.md)!
+For more information, check the list of available commands [here](./documentation/commands.md)!
 
 ##### Configuration
 For the moment commands doesn't work on every language. By default Speech Recognition is set in *French*, so you can change it as your convinience. To change it, open `./src/Vocal/index.js` and change commands set in constant `commands`, then change `annyang.setLanguage('fr-FR');` instruction with the language you want. 
