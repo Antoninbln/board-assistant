@@ -8,7 +8,7 @@
 
   :global {
     .c-clock__day {
-      font-family: $font-secondary;
+      // font-family: $font-secondary;
       font-weight: 300;
       font-size: 22px;
       letter-spacing: 1px;
@@ -18,7 +18,7 @@
     }
 
     .c-clock__time {
-      font-family: $font;
+      // font-family: $font;
       font-size: 55px;
       font-weight: 700;
       letter-spacing: 1px;
@@ -32,7 +32,7 @@
 
       .separator {
         display: inline-flex;
-        font-family: $font-secondary;
+        // font-family: $font-secondary;
         font-weight: 300;
         margin: 0 16px;
       }
