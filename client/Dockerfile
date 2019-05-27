@@ -7,6 +7,7 @@ WORKDIR /usr/board-assistant/frontend
 COPY ./ ./
 
 RUN npm install
-RUN npm build
+# RUN npm rebuild node-sass
+# RUN npm build
 
 CMD [ "npm", "run", "client" ]

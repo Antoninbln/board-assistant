@@ -4,9 +4,20 @@ services:
     container_name: board-assistant-frontend
     env_file: ./.env
     # network_mode: host
-    image: board-assistant/frontend
+    # image: board-assistant/frontend
+    build: ./client
     # volumes:
-    #   - ./:/usr/board-assistant/frontend
+    #   - ./client:/usr/board-assistant/frontend
     ports:
       - 3000:3000
+
+  board-backend:
+    container_name: board-assistant-backend
+    env_file: ./.env
+    # network_mode: host
+    # image: board-assistant/backend
+    build: ./server
+    # volumes:
+    #   - ./server:/usr/board-assistant/frontend
+    ports:
       - 8000:8888
