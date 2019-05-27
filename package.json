@@ -23,7 +23,7 @@
   },
   "scripts": {
     "start": "yarn server && yarn client",
-    "client": "webpack-dev-server --mode development --hot --module-bind js=babel-loader",
+    "client": "webpack-dev-server --mode development --host 0.0.0.0 --hot --module-bind js=babel-loader",
     "server": "nodemon ./src/server/authorization_code/app.js",
     "build": "webpack --mode production",
     "test": "react-scripts test --env=jsdom",
