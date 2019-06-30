@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import { getUniqueId } from "utils";
 import NextWeathersListItem from "./NextWeathersListItem";
@@ -13,17 +14,25 @@ const NextWeathersList = ({ reports }) => {
       <h3 className="next-weathers-list__title">Next reports</h3>
       <div className="next-weathers-list__list">
         {reportsToShow.map(item => ( // Mapping over keys
-            <NextWeathersListItem
-              key={getUniqueId()}
-              data={item}
-              temperature
-              icon
-              hours
-            />
-          ))}
+          <NextWeathersListItem
+            key={getUniqueId()}
+            data={item}
+            temperature
+            icon
+            hours
+          />
+        ))}
       </div>
     </div>
   );
+};
+
+NextWeathersList.propTypes = {
+  reports: PropTypes.arrayOf(PropTypes.shape({}))
+};
+
+NextWeathersList.defaultProps = {
+  reports: []
 };
 
 export default NextWeathersList;

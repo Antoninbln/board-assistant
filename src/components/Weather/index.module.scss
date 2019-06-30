@@ -1,13 +1,10 @@
 .weather {
   color: $white;
   width: 320px;
-  margin-right: 100px;
-  margin-top: 75px;
   align-self: flex-end;
   justify-self: flex-end;
   position: absolute;
-  right: 0;
-  top: 0;
+  top: 75px;
 
   :global {
     h2 {

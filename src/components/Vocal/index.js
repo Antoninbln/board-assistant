@@ -1,9 +1,10 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+
 import annyang from "annyang";
 import { playSong, searchSong, searchAlbum, getArtists, getCover, getTrackName, getDuration, getHashParams, getNewAccessToken } from "utils/fetchSpotify";
 
 import styles from "./index.module.scss";
-import BesideTrack from "./BesideTrack";
 import CarouselTracks from "./CarouselTracks";
 
 class Vocal extends Component {
@@ -12,8 +13,6 @@ class Vocal extends Component {
 
     this.state = {
       command: "",
-      commandType: "",
-      spotifyLogged: false,
       accessToken: null,
       refreshToken: null,
     };
@@ -28,11 +27,14 @@ class Vocal extends Component {
   }
 
   componentDidMount() {
+    const { openMeteo, openBus } = this.props;
+    
     this.audio = new Audio();
 
     // Retrieve params from URL
     if (window) {
       const params = getHashParams();
+
       this.setState({
         accessToken: params && params.access_token,
         refreshToken: params && params.refresh_token
@@ -40,10 +42,22 @@ class Vocal extends Component {
     }
 
     if (annyang) {
-      console.log("%c > Speech recognition accessible", "color: red; font-weight: 600;");
+      console.log("%c > Speech recognition accessible", "color: red; font-weight: 600;"); // eslint-disable-line
       const commands = {
         "test": () => {
-          this.setState({ comand: "test" });
+          this.setState({ command: "test" });
+        },
+        "(montre-moi) la météo": () => {
+          openMeteo(true);
+        },
+        "ferme la météo": () => {
+          openMeteo(false);
+        },
+        "(montre-moi les) horaires de bus": () => {
+          openBus(true);
+        },
+        "ferme les horaires de bus": () => {
+          openBus(false);
         },
         "album *album": album => {
           this.setState({ command: album });
@@ -69,14 +83,14 @@ class Vocal extends Component {
             command: "Next",
             previousTrack: null,
             nextTrack: null,
-          }, () => this.player && this.player.nextTrack() && this.refs.carouselTracks.updateRandomGradient());
+          }, () => this.player && this.player.nextTrack() && this.carouselTracks.updateRandomGradient());
         },
         "précédent": () => {
           this.setState({
             command: "Previous",
             previousTrack: null,
             nextTrack: null,
-          }, () => this.player && this.player.previousTrack() && this.refs.carouselTracks.updateRandomGradient());
+          }, () => this.player && this.player.previousTrack() && this.carouselTracks.updateRandomGradient());
         },
         "avance": () => {
           this.setState({ command: "Seek" });
@@ -89,7 +103,7 @@ class Vocal extends Component {
         "*anything": anything => this.setState({ command: anything })
       };
       annyang.addCommands(commands);
-      annyang.setLanguage('fr-FR');
+      annyang.setLanguage("fr-FR");
       annyang.start();
     }
   }
@@ -116,7 +130,7 @@ class Vocal extends Component {
             }
           })
           .catch(err => console.error("Houston Houston, we got a situation here !", "Cf. Song", err));
-      })
+      });
   }
 
   /**
@@ -141,8 +155,7 @@ class Vocal extends Component {
             }
           })
           .catch(err => console.error("Houston Houston, we got a situation here !", "Cf. Album", err));
-        }
-      )
+      });
   }
 
   /**
@@ -173,13 +186,13 @@ class Vocal extends Component {
    */
   apiEventHandler() {
     // Error handling
-    this.player.addListener('initialization_error', ({ message }) => { console.error(message); });
-    this.player.addListener('authentication_error', ({ message }) => { console.error("Failed to authenticate account", message) });
-    this.player.addListener('account_error', ({ message }) => { console.error(message); });
-    this.player.addListener('playback_error', ({ message }) => { console.error(message); });
+    this.player.addListener("initialization_error", ({ message }) => { console.error(message); });
+    this.player.addListener("authentication_error", ({ message }) => { console.error("Failed to authenticate account", message); });
+    this.player.addListener("account_error", ({ message }) => { console.error(message); });
+    this.player.addListener("playback_error", ({ message }) => { console.error(message); });
   
     // Playback status updates
-    this.player.addListener('player_state_changed', statePlayer => {
+    this.player.addListener("player_state_changed", statePlayer => {
       this.setState({
         currentTrack: statePlayer.track_window && statePlayer.track_window.current_track,
         previousTrack: statePlayer.track_window && statePlayer.track_window.previous_tracks && statePlayer.track_window.previous_tracks[0],
@@ -188,10 +201,12 @@ class Vocal extends Component {
     });
   
     // Ready
-    this.player.addListener('ready', ({ device_id }) => { console.log('Ready with Device ID', device_id); });
+    /* eslint-disable-next-line camelcase */
+    this.player.addListener("ready", ({ device_id }) => { console.log("Ready with Device ID", device_id); });
   
     // Not Ready
-    this.player.addListener('not_ready', ({ device_id }) => console.log('Device ID has gone offline', device_id));
+    /* eslint-disable-next-line camelcase */
+    this.player.addListener("not_ready", ({ device_id }) => console.log("Device ID has gone offline", device_id));
   
     // Connect to the player!
     this.player.connect();
@@ -208,7 +223,7 @@ class Vocal extends Component {
   }
 
   render() {
-    const { currentTrack, previousTrack, nextTrack, command, refreshToken } = this.state;
+    const { currentTrack, previousTrack, nextTrack, command } = this.state;
 
     const cover = currentTrack && getCover(currentTrack);
 
@@ -218,17 +233,19 @@ class Vocal extends Component {
         {currentTrack && (
           <section className="spotify">
             <div className="spotify__player txt__white">
-              <h2 className="spotify__player__head"><span className="youre-listening-to">Vous écoutez</span><br/>{getTrackName(currentTrack)} - {
-                getArtists(currentTrack).length > 1
-                  ? getArtists(currentTrack).map(
-                      (item, index) => (
-                        <span key={`artist-${index}`}>{!index == 0 && " & "}{item}</span>
-                      ))
-                  : <span>{getArtists(currentTrack)[0]}</span>}
+              <h2 className="spotify__player__head">
+                <span className="youre-listening-to">Vous écoutez</span>
+                <br/>
+                {getTrackName(currentTrack)} - {
+                  getArtists(currentTrack).length > 1
+                    ? getArtists(currentTrack).map((artist, index) => (
+                      <span key={`artist-${artist}`}>{index !== 0 && " & "}{artist}</span>
+                    ))
+                    : <span>{getArtists(currentTrack)[0]}</span>}
                 <p>{getDuration(currentTrack)}</p>
               </h2>
               <CarouselTracks
-                ref="carouselTracks"
+                ref={el => this.carouselTracks = el}
                 cover={cover}
                 previousTrack={previousTrack}
                 nextTrack={nextTrack}
@@ -243,5 +260,14 @@ class Vocal extends Component {
     );
   }
 }
+
+Vocal.propTypes = {
+  openBus: PropTypes.func,
+  openMeteo: PropTypes.func
+};
+Vocal.defaultProps = {
+  openBus: () => {},
+  openMeteo: () => {}
+};
 
 export default Vocal;

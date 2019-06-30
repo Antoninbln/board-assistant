@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import { getArtists, getCover, getTrackName } from "utils/fetchSpotify";
+import PropTypes from "prop-types";
+
+import { getCover } from "utils/fetchSpotify";
 
 import styles from "./index.module.scss";
 
@@ -17,7 +19,7 @@ class CarouselTracks extends Component {
     super(props);
     this.state = {
       randomGradient: GRADIENTS[Math.floor(Math.random() * GRADIENTS.length)],
-    }
+    };
   }
 
   updateRandomGradient() {
@@ -26,25 +28,25 @@ class CarouselTracks extends Component {
 
   render() {
     const { cover, previousTrack, nextTrack } = this.props;
-    const { color1, color2 } = this.state.randomGradient;
-    const linear = { background: `${color1}`, background: `linear-gradient(45deg, ${color1}, ${color2})` };
+    const { color1, color2 } = this.state.randomGradient; // eslint-disable-line react/destructuring-assignment
+    const linear = { background: `linear-gradient(45deg, ${color1}, ${color2})` };
 
     return (
-      <div>
-        <div className='spotify__carousel'>
+      <div className={styles.group}>
+        <div className="spotify__carousel">
           <div className="spotify__carousel__beside-container">
             {previousTrack
               ? (
                 <img className="spotify__carousel__beside-container__track" src={getCover(previousTrack)} alt="Cover previous track" />
               ) : (
-                <div className="spotify__carousel__beside-container__track no-cover" />
+                <div className="spotify__carousel__beside-container__track no-cover" style={linear} />
               )
             }
             {nextTrack
               ? (
                 <img className="spotify__carousel__beside-container__track" src={getCover(nextTrack)} alt="Cover next track" />
               ) : (
-                <div className="spotify__carousel__beside-container__track no-cover" />
+                <div className="spotify__carousel__beside-container__track no-cover" style={linear} />
               )
             }
           </div>
@@ -64,8 +66,21 @@ class CarouselTracks extends Component {
           )
         }
       </div>
-    )
+    );
   }
 }
+
+
+CarouselTracks.propTypes = {
+  cover: PropTypes.string,
+  previousTrack: PropTypes.shape({}),
+  nextTrack: PropTypes.shape({})
+};
+
+CarouselTracks.defaultProps = {
+  cover: null,
+  previousTrack: null,
+  nextTrack: null
+};
 
 export default CarouselTracks;

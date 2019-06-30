@@ -1,12 +1,12 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 
-import registerServiceWorker from './registerServiceWorker';
+import registerServiceWorker from "./registerServiceWorker";
 
-import "@babel/polyfill";
+import "@babel/polyfill"; // eslint-disable-line import/no-extraneous-dependencies
 
 // import './assets/stylessheets/index.css';
-import App from './sections/App';
+import App from "./sections/App";
 
 ReactDOM.render(<App />, document.getElementById("root"));
 registerServiceWorker();
